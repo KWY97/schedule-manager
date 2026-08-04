@@ -2,6 +2,7 @@ package com.example.manage.service;
 
 import com.example.manage.repository.AdminRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -10,4 +11,5 @@ import org.springframework.stereotype.Service;
 public class AdminService {
 
     private final AdminRepository adminRepository;
+    private final PasswordEncoder passwordEncoder;
 }
