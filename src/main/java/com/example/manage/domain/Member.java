@@ -16,6 +16,9 @@ public class Member {
     @Column(nullable = false, unique = true)
     private Integer participantNo;
 
+    @Column(nullable = false)
+    private Integer groupNo;
+
     @Column(nullable = false, unique = true)
     private String loginId;
 
