@@ -4,28 +4,27 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @Getter
 @NoArgsConstructor
-public class Schedule {
+public class ScheduleSpot {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long scheduleId;
+    private Long scheduleSpotId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
+    @JoinColumn(name = "schedule_id", nullable = false)
+    private Schedule schedule;
 
     @Column(nullable = false)
-    private LocalDate scheduleDate;
+    private String spotName;
 
     @Column(nullable = false)
-    private String course;
+    private LocalTime startTime;
 
-    private String weather;
-    private Double temperature;
-    private Double humidity;
+    @Column(nullable = false)
+    private Integer sequence;
 }
