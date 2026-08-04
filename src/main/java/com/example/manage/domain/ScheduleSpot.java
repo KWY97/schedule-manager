@@ -20,7 +20,7 @@ public class ScheduleSpot {
     private Schedule schedule;
 
     @Column(nullable = false)
-    private String spotName;
+    private Integer spotNo;
 
     @Column(nullable = false)
     private LocalTime startTime;
