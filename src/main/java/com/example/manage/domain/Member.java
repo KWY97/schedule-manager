@@ -27,4 +27,11 @@ public class Member {
 
     private String name;
     private String phone;
+
+    public Member(Integer participantNo, Integer groupNo, String loginId, String password) {
+        this.participantNo = participantNo;
+        this.groupNo = groupNo;
+        this.loginId = loginId;
+        this.password = password;
+    }
 }
