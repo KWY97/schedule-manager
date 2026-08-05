@@ -211,6 +211,219 @@ body {
 }
 
 /* ================================
+   관리자 목록, 상세, 일정 등록
+================================ */
+
+/* 관리자 목록 페이지용 넓은 카드 */
+.list-card {
+    max-width: 1080px;
+}
+
+.form-card {
+    max-width: 680px;
+}
+
+.member-detail-card {
+    max-width: 620px;
+}
+
+/* 상단 기능 버튼 영역 */
+.page-action-area {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.page-action-area .primary-link-button {
+    width: auto;
+    min-height: 42px;
+    padding: 0 18px;
+    font-size: 14px;
+}
+
+/* 테이블이 작은 화면을 넘으면 가로 스크롤 */
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+}
+
+/* 참가자 및 일정 공통 테이블 */
+.member-table {
+    width: 100%;
+    min-width: 640px;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    font-size: 14px;
+}
+
+.member-table th,
+.member-table td {
+    padding: 15px 18px;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.member-table th {
+    background-color: #f8fafc;
+    color: #475569;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.member-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.member-table tbody tr {
+    transition: background-color 0.15s ease;
+}
+
+.member-table tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+/* 참가자 상세 이동 링크 */
+.member-detail-link {
+    color: #2563eb;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.member-detail-link:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+/* 그룹, 코스 표시 배지 */
+.group-label,
+.course-label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 28px;
+    padding: 0 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.group-label {
+    background-color: #f1f5f9;
+    color: #475569;
+}
+
+.course-label {
+    background-color: #dbeafe;
+    color: #1d4ed8;
+}
+
+/* 데이터가 없을 때 */
+.empty-message {
+    margin: 24px 0 0;
+    padding: 20px;
+    border: 1px dashed #cbd5e1;
+    border-radius: 10px;
+    background-color: #f8fafc;
+    color: #64748b;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* 참가자 상세 정보 */
+.member-detail-list {
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+}
+
+.member-detail-item {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.member-detail-item:last-child {
+    border-bottom: 0;
+}
+
+.member-detail-item dt,
+.member-detail-item dd {
+    margin: 0;
+    padding: 17px 20px;
+}
+
+.member-detail-item dt {
+    background-color: #f8fafc;
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.member-detail-item dd {
+    color: #111827;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.detail-action-list {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+/* 일정 등록 폼 */
+.form-card fieldset {
+    min-width: 0;
+    margin: 4px 0 0;
+    padding: 20px;
+    border: 1px solid #dbe2ea;
+    border-radius: 12px;
+    background-color: #f8fafc;
+}
+
+.form-card legend {
+    padding: 0 8px;
+    color: #1e40af;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.form-card fieldset .form-group + .form-group {
+    margin-top: 16px;
+}
+
+/* select에도 기존 input 스타일 적용 */
+select.form-input {
+    appearance: none;
+    cursor: pointer;
+    background-image:
+        linear-gradient(45deg, transparent 50%, #64748b 50%),
+        linear-gradient(135deg, #64748b 50%, transparent 50%);
+    background-position:
+        calc(100% - 18px) 21px,
+        calc(100% - 13px) 21px;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+    padding-right: 38px;
+}
+
+/* 날짜, 시간 입력 높이 통일 */
+input[type="date"].form-input,
+input[type="time"].form-input {
+    font-family: inherit;
+}
+
+/* 버튼이 form 전체 너비 사용 */
+.login-form .primary-button {
+    margin-top: 4px;
+}
+
+/* ================================
    참가자 및 관리자 대시보드
 ================================ */
 
@@ -596,5 +809,33 @@ body {
 
     .card-title {
         font-size: 26px;
+    }
+
+    .page-action-area {
+        justify-content: stretch;
+    }
+
+    .page-action-area .primary-link-button {
+        width: 100%;
+    }
+
+    .member-detail-item {
+        grid-template-columns: 1fr;
+    }
+
+    .member-detail-item dt {
+        padding-bottom: 6px;
+    }
+
+    .member-detail-item dd {
+        padding-top: 6px;
+    }
+
+    .detail-action-list {
+        flex-direction: column;
+    }
+
+    .form-card fieldset {
+        padding: 18px 14px;
     }
 }

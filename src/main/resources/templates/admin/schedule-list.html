@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>일정 목록</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="page-body">
+
+<main class="page-container">
+    <section class="card list-card">
+
+        <div class="card-header">
+            <p class="card-eyebrow">Administrator</p>
+            <h1 class="card-title">일정 목록</h1>
+            <p class="card-description">
+                현재 등록된 참가자별 일정을 확인합니다.
+            </p>
+        </div>
+
+        <div class="page-action-area">
+            <a
+                    class="primary-link-button"
+                    th:href="@{/admin/schedules/new}">
+                새 일정 등록
+            </a>
+        </div>
+
+        <div class="table-wrapper">
+            <table class="member-table">
+                <thead>
+                <tr>
+                    <th>일정 날짜</th>
+                    <th>참가자 번호</th>
+                    <th>그룹</th>
+                    <th>로그인 아이디</th>
+                    <th>코스</th>
+                    <th>날씨</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="schedule : ${schedules}">
+                    <td th:text="${schedule.scheduleDate}"></td>
+                    <td th:text="${schedule.member.participantNo}"></td>
+                    <td th:text="${schedule.member.group}"></td>
+                    <td th:text="${schedule.member.loginId}"></td>
+                    <td>
+                <span class="course-label"
+                      th:text="|코스 ${schedule.course}|">
+                </span>
+                    </td>
+                    <td th:text="${schedule.weather != null ? schedule.weather : '-'}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <p
+                class="empty-message"
+                th:if="${#lists.isEmpty(schedules)}">
+            등록된 일정이 없습니다.
+        </p>
+
+        <a
+                class="back-link"
+                th:href="@{/admin}">
+            관리자 메인으로
+        </a>
+
+    </section>
+</main>
+
+</body>
+</html>

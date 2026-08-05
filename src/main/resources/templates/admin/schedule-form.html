@@ -9,7 +9,7 @@
 <body class="page-body">
 
 <main class="page-container">
-    <section class="card">
+    <section class="card form-card">
 
         <div class="card-header">
             <p class="card-eyebrow">Administrator</p>
@@ -24,41 +24,39 @@
                 th:action="@{/admin/schedules/new}"
                 method="post"
         >
-            <div>
-                <label for="memberId">참가자</label>
+            <div class="form-group">
+                <label class="form-label" for="memberId">참가자</label>
 
-                <select
+                <select class="form-input"
                         id="memberId"
                         name="memberId"
-                        required
-                >
+                        required>
                     <option value="">참가자를 선택해 주세요</option>
 
-                    <option
-                            th:each="member : ${members}"
+                    <option th:each="member : ${members}"
                             th:value="${member.memberId}"
                             th:text="|${member.participantNo}번 · ${member.group}그룹 · ${member.loginId}|">
                     </option>
                 </select>
             </div>
 
-            <div>
-                <label for="scheduleDate">일정 날짜</label>
-                <input
-                        type="date"
-                        id="scheduleDate"
-                        name="scheduleDate"
-                        required
-                >
+            <div class="form-group">
+                <label class="form-label" for="scheduleDate">일정 날짜</label>
+
+                <input class="form-input"
+                       type="date"
+                       id="scheduleDate"
+                       name="scheduleDate"
+                       required>
             </div>
 
-            <div>
-                <label for="course">코스</label>
-                <select
+            <div class="form-group">
+                <label class="form-label" for="course">코스</label>
+
+                <select class="form-input"
                         id="course"
                         name="course"
-                        required
-                >
+                        required>
                     <option value="">코스를 선택해 주세요</option>
                     <option value="A">HC-A 서측 회복 코스</option>
                     <option value="B">HC-B 동측 감각 코스</option>
@@ -69,9 +67,9 @@
             <fieldset>
                 <legend>첫 번째 스팟</legend>
 
-                <div>
-                    <label for="firstSpotNo">스팟 번호</label>
-                    <select
+                <div class="form-group">
+                    <label class="form-label" for="firstSpotNo">스팟 번호</label>
+                    <select class="form-input"
                             id="firstSpotNo"
                             name="firstSpotNo"
                             required
@@ -86,9 +84,9 @@
                     </select>
                 </div>
 
-                <div>
-                    <label for="firstStartTime">시작 시간</label>
-                    <input
+                <div class="form-group">
+                    <label class="form-label" for="firstStartTime">시작 시간</label>
+                    <input  class="form-input"
                             type="time"
                             id="firstStartTime"
                             name="firstStartTime"
@@ -100,9 +98,9 @@
             <fieldset>
                 <legend>두 번째 스팟</legend>
 
-                <div>
-                    <label for="secondSpotNo">스팟 번호</label>
-                    <select
+                <div class="form-group">
+                    <label class="form-label" for="secondSpotNo">스팟 번호</label>
+                    <select class="form-input"
                             id="secondSpotNo"
                             name="secondSpotNo"
                             required
@@ -117,9 +115,9 @@
                     </select>
                 </div>
 
-                <div>
-                    <label for="secondStartTime">시작 시간</label>
-                    <input
+                <div class="form-group">
+                    <label class="form-label" for="secondStartTime">시작 시간</label>
+                    <input class="form-input"
                             type="time"
                             id="secondStartTime"
                             name="secondStartTime"
@@ -128,7 +126,7 @@
                 </div>
             </fieldset>
 
-            <button type="submit">일정 등록</button>
+            <button class="primary-button" type="submit">일정 등록</button>
         </form>
 
         <a class="back-link"

@@ -2,6 +2,7 @@ package com.example.manage.controller;
 
 import com.example.manage.domain.Admin;
 import com.example.manage.domain.Member;
+import com.example.manage.domain.Schedule;
 import com.example.manage.dto.ScheduleForm;
 import com.example.manage.service.AdminService;
 import com.example.manage.service.MemberService;
@@ -114,5 +115,15 @@ public class AdminController {
         );
 
         return "redirect:/admin";
+    }
+
+    @GetMapping("/admin/schedules")
+    public String scheduleList(Model model) {
+
+        List<Schedule> schedules = scheduleService.findAllSchedules();
+
+        model.addAttribute("schedules", schedules);
+
+        return "admin/schedule-list";
     }
 }

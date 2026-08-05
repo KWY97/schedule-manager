@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 @Service
 @Transactional
@@ -61,5 +62,10 @@ public class ScheduleService {
 
         scheduleSpotRepository.save(firstSpot);
         scheduleSpotRepository.save(secondSpot);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Schedule> findAllSchedules() {
+        return scheduleRepository.findAll();
     }
 }

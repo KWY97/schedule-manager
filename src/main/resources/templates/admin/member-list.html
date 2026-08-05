@@ -10,7 +10,7 @@
 
 <main class="page-container">
 
-    <section class="card">
+    <section class="card list-card">
 
         <div class="card-header">
             <p class="card-eyebrow">Administrator</p>
@@ -24,32 +24,36 @@
             </p>
         </div>
 
-        <table class="member-table">
+        <div class="table-wrapper">
+            <table class="member-table">
+                <thead>
+                <tr>
+                    <th>참가자 번호</th>
+                    <th>그룹</th>
+                    <th>아이디</th>
+                </tr>
+                </thead>
 
-            <thead>
-            <tr>
-                <th>참가자 번호</th>
-                <th>그룹</th>
-                <th>아이디</th>
-            </tr>
-            </thead>
+                <tbody>
+                <tr th:each="member : ${members}">
+                    <td>
+                        <a class="member-detail-link"
+                           th:href="@{/admin/members/{memberId}(memberId=${member.memberId})}"
+                           th:text="${member.participantNo}">
+                        </a>
+                    </td>
 
-            <tbody>
+                    <td>
+                <span class="group-label"
+                      th:text="|${member.group}그룹|">
+                </span>
+                    </td>
 
-            <tr th:each="member : ${members}">
-                <td>
-                    <a class="member-detail-link"
-                       th:href="@{/admin/members/{memberId}(memberId=${member.memberId})}"
-                       th:text="${member.participantNo}">
-                    </a>
-                </td>
-                <td th:text="${member.group}"></td>
-                <td th:text="${member.loginId}"></td>
-            </tr>
-
-            </tbody>
-
-        </table>
+                    <td th:text="${member.loginId}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
 
         <a th:href="@{/admin}"
            class="back-link">
