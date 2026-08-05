@@ -1,20 +1,26 @@
 package com.example.manage.controller;
 
 import com.example.manage.domain.Admin;
+import com.example.manage.domain.Member;
 import com.example.manage.service.AdminService;
+import com.example.manage.service.MemberService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 public class AdminController {
 
     private final AdminService adminService;
+    private final MemberService memberService;
 
     @GetMapping("/admin/login")
     public String adminLogin() {
@@ -51,5 +57,31 @@ public class AdminController {
         session.invalidate();
 
         return "redirect:/";
+    }
+
+    @GetMapping("admin/members")
+    public String memberList(Model model) {
+
+        List<Member> members = memberService.findAllMembers();
+
+        model.addAttribute("members", members);
+
+        return "admin/member-list";
+    }
+
+    @GetMapping("/admin/members/{memberId}")
+    public String memberDetail(
+            @PathVariable Long memberId,
+            Model model
+    ) {
+        Member member = memberService.findMember(memberId);
+
+        if (member == null) {
+            return "redirect:/admin/members";
+        }
+
+        model.addAttribute("member", member);
+
+        return "admin/member-detail";
     }
 }

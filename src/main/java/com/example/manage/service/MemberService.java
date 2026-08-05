@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -47,5 +49,13 @@ public class MemberService {
         }
 
         return member;
+    }
+
+    public List<Member> findAllMembers() {
+        return memberRepository.findAll();
+    }
+
+    public Member findMember(Long memberId) {
+        return memberRepository.findById(memberId).orElse(null);
     }
 }
