@@ -199,6 +199,17 @@ body {
     text-decoration: underline;
 }
 
+.error-message {
+    margin: 0 0 20px;
+    padding: 12px 14px;
+    border: 1px solid #fecaca;
+    border-radius: 10px;
+    background-color: #fef2f2;
+    color: #dc2626;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
 /* 모바일 대응 */
 @media (max-width: 520px) {
     .page-container {

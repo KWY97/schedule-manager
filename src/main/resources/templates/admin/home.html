@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 메인</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="page-body">
+
+<main class="page-container">
+
+    <section class="card home-card">
+
+        <div class="card-header">
+            <p class="card-eyebrow">Administrator</p>
+
+            <h1 class="card-title">
+                관리자 메인
+            </h1>
+
+            <p class="card-description">
+                일정 관리 시스템 관리자 화면입니다.
+            </p>
+        </div>
+
+        <div class="login-type-list">
+
+            <a href="#"
+               class="primary-link-button">
+                참가자 관리
+            </a>
+
+            <a href="#"
+               class="secondary-link-button">
+                일정 관리
+            </a>
+
+            <a href="#"
+               class="secondary-link-button">
+                달력 보기
+            </a>
+
+        </div>
+
+        <a th:href="@{/admin/logout}"
+           class="back-link">
+            로그아웃
+        </a>
+
+    </section>
+
+</main>
+
+</body>
+</html>

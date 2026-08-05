@@ -19,7 +19,9 @@
         </div>
 
         <!-- 실제 로그인 처리는 다음 단계에서 연결 -->
-        <form class="login-form" method="post">
+        <form class="login-form"
+              th:action="@{/member/login}"
+              method="post">
             <div class="form-group">
                 <label class="form-label" for="loginId">
                     아이디

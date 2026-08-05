@@ -25,4 +25,19 @@ public class AdminService {
 
         adminRepository.save(admin);
     }
+
+    public Admin login(String loginId, String rawPassword) {
+
+        Admin admin = adminRepository.findByLoginId(loginId).orElse(null);
+
+        if (admin == null) {
+            return null;
+        }
+
+        if (!passwordEncoder.matches(rawPassword, admin.getPassword())) {
+            return null;
+        }
+
+        return admin;
+    }
 }
