@@ -2,8 +2,10 @@ package com.example.manage.controller;
 
 import com.example.manage.domain.Admin;
 import com.example.manage.domain.Member;
+import com.example.manage.dto.ScheduleForm;
 import com.example.manage.service.AdminService;
 import com.example.manage.service.MemberService;
+import com.example.manage.service.ScheduleService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,7 @@ public class AdminController {
 
     private final AdminService adminService;
     private final MemberService memberService;
+    private final ScheduleService scheduleService;
 
     @GetMapping("/admin/login")
     public String adminLogin() {
@@ -93,5 +96,23 @@ public class AdminController {
         model.addAttribute("members", members);
 
         return "admin/schedule-form";
+    }
+
+    @PostMapping("/admin/schedules/new")
+    public String createSchedule(
+            ScheduleForm form
+    ) {
+
+        scheduleService.createSchedule(
+                form.getMemberId(),
+                form.getScheduleDate(),
+                form.getCourse(),
+                form.getFirstSpotNo(),
+                form.getFirstStartTime(),
+                form.getSecondSpotNo(),
+                form.getSecondStartTime()
+        );
+
+        return "redirect:/admin";
     }
 }

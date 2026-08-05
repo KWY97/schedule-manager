@@ -54,8 +54,8 @@ public class ScheduleService {
 
         ScheduleSpot secondSpot = new ScheduleSpot(
                 schedule,
-                firstSpotNo,
-                firstStartTime,
+                secondSpotNo,
+                secondStartTime,
                 2
         );
 
