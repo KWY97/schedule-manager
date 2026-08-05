@@ -748,7 +748,99 @@ input[type="time"].form-input {
     font-size: 14px;
 }
 
-/* 대시보드 모바일 대응 */
+/* ================================
+   일정 상세 페이지
+================================ */
+
+.schedule-spot-section {
+    margin-top: 28px;
+}
+
+.schedule-spot-header {
+    margin-bottom: 16px;
+}
+
+.schedule-spot-header h2 {
+    margin: 0;
+    color: #111827;
+    font-size: 18px;
+}
+
+.schedule-spot-header p {
+    margin: 6px 0 0;
+    color: #6b7280;
+    font-size: 13px;
+}
+
+
+/* ================================
+   참가자 내 일정 목록
+================================ */
+
+.member-schedule-section {
+    margin-top: 32px;
+}
+
+.member-schedule-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.member-schedule-card {
+    padding: 22px;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    background-color: #ffffff;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+}
+
+.member-schedule-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.member-schedule-date {
+    color: #111827;
+    font-size: 18px;
+}
+
+.member-schedule-information {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.member-schedule-information div {
+    padding: 14px;
+    border-radius: 10px;
+    background-color: #f8fafc;
+}
+
+.member-schedule-information span,
+.member-schedule-information strong {
+    display: block;
+}
+
+.member-schedule-information span {
+    margin-bottom: 6px;
+    color: #6b7280;
+    font-size: 12px;
+}
+
+.member-schedule-information strong {
+    color: #1f2937;
+    font-size: 14px;
+}
+
+
+/* ================================
+   태블릿 및 작은 화면 대응
+================================ */
+
 @media (max-width: 760px) {
     .dashboard-header-inner {
         width: min(100% - 28px, 1200px);
@@ -794,30 +886,18 @@ input[type="time"].form-input {
     .schedule-detail-header {
         flex-direction: column;
     }
+
+    /* 내 일정 카드를 2열에서 1열로 변경 */
+    .member-schedule-list {
+        grid-template-columns: 1fr;
+    }
 }
 
-/* 일정 상세 페이지 */
-.schedule-spot-section {
-    margin-top: 28px;
-}
 
-.schedule-spot-header {
-    margin-bottom: 16px;
-}
+/* ================================
+   모바일 대응
+================================ */
 
-.schedule-spot-header h2 {
-    margin: 0;
-    color: #111827;
-    font-size: 18px;
-}
-
-.schedule-spot-header p {
-    margin: 6px 0 0;
-    color: #6b7280;
-    font-size: 13px;
-}
-
-/* 모바일 대응 */
 @media (max-width: 520px) {
     .page-container {
         padding: 20px 16px;
@@ -858,5 +938,70 @@ input[type="time"].form-input {
 
     .form-card fieldset {
         padding: 18px 14px;
+    }
+
+    .dashboard-header-inner {
+        min-height: auto;
+    }
+
+    .dashboard-title {
+        font-size: 20px;
+    }
+
+    .dashboard-container {
+        padding-bottom: 40px;
+    }
+
+    .section-title {
+        font-size: 23px;
+    }
+
+    .calendar-current-month {
+        min-width: auto;
+        font-size: 14px;
+    }
+
+    .calendar-navigation {
+        gap: 8px;
+    }
+
+    .calendar-navigation-button {
+        padding: 0 10px;
+        font-size: 12px;
+    }
+
+    .calendar-day {
+        min-height: 66px;
+        padding: 6px;
+    }
+
+    .calendar-date {
+        margin-bottom: 5px;
+        font-size: 11px;
+    }
+
+    .calendar-event {
+        overflow: hidden;
+        padding: 4px;
+        font-size: 9px;
+        text-overflow: ellipsis;
+    }
+
+    .schedule-detail-card {
+        padding: 22px 18px;
+    }
+
+    .member-schedule-card {
+        padding: 18px;
+    }
+
+    .member-schedule-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .member-schedule-information {
+        grid-template-columns: 1fr;
     }
 }

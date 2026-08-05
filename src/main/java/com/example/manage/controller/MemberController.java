@@ -1,7 +1,9 @@
 package com.example.manage.controller;
 
 import com.example.manage.domain.Member;
+import com.example.manage.domain.Schedule;
 import com.example.manage.service.MemberService;
+import com.example.manage.service.ScheduleService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -10,11 +12,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 public class MemberController {
 
     private final MemberService memberService;
+    private final ScheduleService scheduleService;
 
     @GetMapping("/member/login")
     public String memberLogin() {
@@ -41,7 +46,15 @@ public class MemberController {
     }
 
     @GetMapping("/member")
-    public String memberHome(HttpSession session) {
+    public String memberHome(
+            HttpSession session,
+            Model model
+    ) {
+        Long memberId = (Long) session.getAttribute("loginMemberId");
+
+        List<Schedule> schedules = scheduleService.findScheduleByMemberId(memberId);
+
+        model.addAttribute("schedules", schedules);
         return "member/home";
     }
 
@@ -52,4 +65,6 @@ public class MemberController {
 
         return "redirect:/";
     }
+
+
 }

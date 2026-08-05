@@ -21,7 +21,8 @@
                 <span>나의 일정을 확인해 주세요.</span>
             </div>
 
-            <a class="logout-link" th:href="@{/member/logout}">
+            <a class="logout-link"
+               th:href="@{/member/logout}">
                 로그아웃
             </a>
         </div>
@@ -30,15 +31,17 @@
 
 <main class="dashboard-container">
 
+    <!-- 현재는 화면 구조 확인을 위한 임시 달력 -->
     <section class="calendar-section">
         <div class="section-heading">
             <div>
-                <p class="section-label">MY SCHEDULE</p>
-                <h2 class="section-title">나의 일정</h2>
+                <p class="section-label">MY CALENDAR</p>
+                <h2 class="section-title">나의 달력</h2>
             </div>
 
             <div class="calendar-navigation">
-                <button class="calendar-navigation-button" type="button">
+                <button class="calendar-navigation-button"
+                        type="button">
                     이전
                 </button>
 
@@ -46,7 +49,8 @@
                     2026년 8월
                 </strong>
 
-                <button class="calendar-navigation-button" type="button">
+                <button class="calendar-navigation-button"
+                        type="button">
                     다음
                 </button>
             </div>
@@ -65,7 +69,7 @@
 
             <div class="calendar-grid calendar-days">
 
-                <!-- 이전 달 날짜 -->
+                <!-- 이전 달 -->
                 <div class="calendar-day other-month">
                     <span class="calendar-date">26</span>
                 </div>
@@ -116,7 +120,6 @@
                     <span class="calendar-date">9</span>
                 </div>
 
-                <!-- 임시 일정이 있는 날짜 -->
                 <div class="calendar-day selected-day">
                     <span class="calendar-date">10</span>
 
@@ -193,7 +196,7 @@
                     <span class="calendar-date">31</span>
                 </div>
 
-                <!-- 다음 달 날짜 -->
+                <!-- 다음 달 -->
                 <div class="calendar-day other-month">
                     <span class="calendar-date">1</span>
                 </div>
@@ -209,52 +212,58 @@
                 <div class="calendar-day other-month">
                     <span class="calendar-date">5</span>
                 </div>
+
             </div>
         </div>
     </section>
 
-    <!-- 현재는 화면 확인을 위한 임시 일정 -->
-    <section class="schedule-detail-card">
-        <div class="schedule-detail-header">
+    <!-- 실제 DB에서 조회한 참가자 본인 일정 -->
+    <section class="member-schedule-section">
+        <div class="section-heading">
             <div>
-                <p class="section-label">SELECTED DATE</p>
-                <h2 class="schedule-detail-title">2026년 8월 10일 일정</h2>
-            </div>
-
-            <span class="course-badge">코스 A</span>
-        </div>
-
-        <div class="schedule-summary">
-            <div class="schedule-summary-item">
-                <span>그룹</span>
-                <strong>A그룹</strong>
-            </div>
-
-            <div class="schedule-summary-item">
-                <span>날씨</span>
-                <strong>맑음 · 27℃ · 습도 65%</strong>
+                <p class="section-label">MY SCHEDULE</p>
+                <h2 class="section-title">내 일정 목록</h2>
             </div>
         </div>
 
-        <div class="schedule-list">
-            <article class="schedule-item">
-                <span class="schedule-sequence">1</span>
+        <div class="member-schedule-list"
+             th:if="${!#lists.isEmpty(schedules)}">
 
-                <div>
-                    <strong class="schedule-time">10:00</strong>
-                    <p class="schedule-spot">힐링 스팟 HS1</p>
+            <article class="member-schedule-card"
+                     th:each="schedule : ${schedules}">
+
+                <div class="member-schedule-header">
+                    <strong class="member-schedule-date"
+                            th:text="${schedule.scheduleDate}">
+                    </strong>
+
+                    <span class="course-badge"
+                          th:text="|코스 ${schedule.course}|">
+                    </span>
                 </div>
-            </article>
 
-            <article class="schedule-item">
-                <span class="schedule-sequence">2</span>
+                <div class="member-schedule-information">
+                    <div>
+                        <span>그룹</span>
+                        <strong th:text="|${schedule.member.group}그룹|"></strong>
+                    </div>
 
-                <div>
-                    <strong class="schedule-time">11:00</strong>
-                    <p class="schedule-spot">힐링 스팟 HS2</p>
+                    <div>
+                        <span>날씨</span>
+                        <strong th:text="${schedule.weather != null
+                            ? schedule.weather
+                            : '-'}">
+                        </strong>
+                    </div>
                 </div>
+
             </article>
         </div>
+
+        <p class="empty-message"
+           th:if="${#lists.isEmpty(schedules)}">
+            등록된 일정이 없습니다.
+        </p>
     </section>
 
 </main>

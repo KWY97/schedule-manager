@@ -70,6 +70,11 @@ public class ScheduleService {
     }
 
     @Transactional(readOnly = true)
+    public List<Schedule> findScheduleByMemberId(Long memberId) {
+        return scheduleRepository.findByMemberMemberIdOrderByScheduleDateAsc(memberId);
+    }
+
+    @Transactional(readOnly = true)
     public Schedule findSchedule(Long scheduleId) {
         return scheduleRepository.findById(scheduleId).orElse(null);
     }
@@ -78,5 +83,4 @@ public class ScheduleService {
     public List<ScheduleSpot> findScheduleSpots(Long scheduleId) {
         return scheduleSpotRepository.findByScheduleScheduleIdOrderBySequenceAsc(scheduleId);
     }
-
 }
