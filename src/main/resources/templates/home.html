@@ -3,12 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage</title>
+    <title>일정 관리 시스템</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
-<body>
+<body class="page-body">
 
-<h1>Manage 홈 화면</h1>
-<p>프로젝트가 정상적으로 실행되었습니다.</p>
+<main class="page-container">
+    <section class="card home-card">
+        <div class="card-header">
+            <p class="card-eyebrow">Schedule Management</p>
+            <h1 class="card-title">일정 관리 시스템</h1>
+            <p class="card-description">
+                로그인 유형을 선택해 주세요.
+            </p>
+        </div>
+
+        <div class="login-type-list">
+            <a class="primary-link-button"
+               th:href="@{/admin/login}">
+                관리자 로그인
+            </a>
+
+            <a class="secondary-link-button"
+               th:href="@{/member/login}">
+                참가자 로그인
+            </a>
+        </div>
+    </section>
+</main>
 
 </body>
 </html>
