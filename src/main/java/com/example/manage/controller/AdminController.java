@@ -42,11 +42,6 @@ public class AdminController {
 
     @GetMapping("/admin")
     public String adminHome(HttpSession session) {
-
-        if (session.getAttribute("loginAdminId") == null) {
-            return "redirect:/admin/login";
-        }
-
         return "admin/home";
     }
 

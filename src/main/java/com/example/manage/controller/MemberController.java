@@ -42,11 +42,6 @@ public class MemberController {
 
     @GetMapping("/member")
     public String memberHome(HttpSession session) {
-
-        if (session.getAttribute("loginMemberId") == null) {
-            return "redirect:/member/login";
-        }
-
         return "member/home";
     }
 
