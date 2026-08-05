@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>참가자 일정</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="dashboard-body">
+
+<header class="dashboard-header">
+    <div class="dashboard-header-inner">
+        <div>
+            <p class="dashboard-eyebrow">Schedule Management</p>
+            <h1 class="dashboard-title">일정 관리 시스템</h1>
+        </div>
+
+        <div class="dashboard-user">
+            <div class="user-information">
+                <strong>참가자</strong>
+                <span>나의 일정을 확인해 주세요.</span>
+            </div>
+
+            <a class="logout-link" th:href="@{/member/logout}">
+                로그아웃
+            </a>
+        </div>
+    </div>
+</header>
+
+<main class="dashboard-container">
+
+    <section class="calendar-section">
+        <div class="section-heading">
+            <div>
+                <p class="section-label">MY SCHEDULE</p>
+                <h2 class="section-title">나의 일정</h2>
+            </div>
+
+            <div class="calendar-navigation">
+                <button class="calendar-navigation-button" type="button">
+                    이전
+                </button>
+
+                <strong class="calendar-current-month">
+                    2026년 8월
+                </strong>
+
+                <button class="calendar-navigation-button" type="button">
+                    다음
+                </button>
+            </div>
+        </div>
+
+        <div class="calendar-card">
+            <div class="calendar-grid calendar-weekdays">
+                <div class="calendar-weekday sunday">일</div>
+                <div class="calendar-weekday">월</div>
+                <div class="calendar-weekday">화</div>
+                <div class="calendar-weekday">수</div>
+                <div class="calendar-weekday">목</div>
+                <div class="calendar-weekday">금</div>
+                <div class="calendar-weekday saturday">토</div>
+            </div>
+
+            <div class="calendar-grid calendar-days">
+
+                <!-- 이전 달 날짜 -->
+                <div class="calendar-day other-month">
+                    <span class="calendar-date">26</span>
+                </div>
+                <div class="calendar-day other-month">
+                    <span class="calendar-date">27</span>
+                </div>
+                <div class="calendar-day other-month">
+                    <span class="calendar-date">28</span>
+                </div>
+                <div class="calendar-day other-month">
+                    <span class="calendar-date">29</span>
+                </div>
+                <div class="calendar-day other-month">
+                    <span class="calendar-date">30</span>
+                </div>
+                <div class="calendar-day other-month">
+                    <span class="calendar-date">31</span>
+                </div>
+
+                <!-- 8월 -->
+                <div class="calendar-day saturday">
+                    <span class="calendar-date">1</span>
+                </div>
+
+                <div class="calendar-day sunday">
+                    <span class="calendar-date">2</span>
+                </div>
+                <div class="calendar-day">
+                    <span class="calendar-date">3</span>
+                </div>
+                <div class="calendar-day">
+                    <span class="calendar-date">4</span>
+                </div>
+                <div class="calendar-day">
+                    <span class="calendar-date">5</span>
+                </div>
+                <div class="calendar-day">
+                    <span class="calendar-date">6</span>
+                </div>
+                <div class="calendar-day">
+                    <span class="calendar-date">7</span>
+                </div>
+                <div class="calendar-day saturday">
+                    <span class="calendar-date">8</span>
+                </div>
+
+                <div class="calendar-day sunday">
+                    <span class="calendar-date">9</span>
+                </div>
+
+                <!-- 임시 일정이 있는 날짜 -->
+                <div class="calendar-day selected-day">
+                    <span class="calendar-date">10</span>
+
+                    <div class="calendar-event">
+                        <strong>코스 A</strong>
+                        <span>10:00 HS1</span>
+                    </div>
+                </div>
+
+                <div class="calendar-day">
+                    <span class="calendar-date">11</span>
+                </div>
+                <div class="calendar-day">
+                    <span class="calendar-date">12</span>
+                </div>
+                <div class="calendar-day">
+                    <span class="calendar-date">13</span>
+                </div>
+                <div class="calendar-day">
+                    <span class="calendar-date">14</span>
+                </div>
+                <div class="calendar-day saturday">
+                    <span class="calendar-date">15</span>
+                </div>
+
+                <div class="calendar-day sunday">
+                    <span class="calendar-date">16</span>
+                </div>
+                <div class="calendar-day">
+                    <span class="calendar-date">17</span>
+                </div>
+                <div class="calendar-day">
+                    <span class="calendar-date">18</span>
+                </div>
+                <div class="calendar-day">
+                    <span class="calendar-date">19</span>
+                </div>
+                <div class="calendar-day">
+                    <span class="calendar-date">20</span>
+                </div>
+                <div class="calendar-day">
+                    <span class="calendar-date">21</span>
+                </div>
+                <div class="calendar-day saturday">
+                    <span class="calendar-date">22</span>
+                </div>
+
+                <div class="calendar-day sunday">
+                    <span class="calendar-date">23</span>
+                </div>
+                <div class="calendar-day">
+                    <span class="calendar-date">24</span>
+                </div>
+                <div class="calendar-day">
+                    <span class="calendar-date">25</span>
+                </div>
+                <div class="calendar-day">
+                    <span class="calendar-date">26</span>
+                </div>
+                <div class="calendar-day">
+                    <span class="calendar-date">27</span>
+                </div>
+                <div class="calendar-day">
+                    <span class="calendar-date">28</span>
+                </div>
+                <div class="calendar-day saturday">
+                    <span class="calendar-date">29</span>
+                </div>
+
+                <div class="calendar-day sunday">
+                    <span class="calendar-date">30</span>
+                </div>
+                <div class="calendar-day">
+                    <span class="calendar-date">31</span>
+                </div>
+
+                <!-- 다음 달 날짜 -->
+                <div class="calendar-day other-month">
+                    <span class="calendar-date">1</span>
+                </div>
+                <div class="calendar-day other-month">
+                    <span class="calendar-date">2</span>
+                </div>
+                <div class="calendar-day other-month">
+                    <span class="calendar-date">3</span>
+                </div>
+                <div class="calendar-day other-month">
+                    <span class="calendar-date">4</span>
+                </div>
+                <div class="calendar-day other-month">
+                    <span class="calendar-date">5</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 현재는 화면 확인을 위한 임시 일정 -->
+    <section class="schedule-detail-card">
+        <div class="schedule-detail-header">
+            <div>
+                <p class="section-label">SELECTED DATE</p>
+                <h2 class="schedule-detail-title">2026년 8월 10일 일정</h2>
+            </div>
+
+            <span class="course-badge">코스 A</span>
+        </div>
+
+        <div class="schedule-summary">
+            <div class="schedule-summary-item">
+                <span>그룹</span>
+                <strong>A그룹</strong>
+            </div>
+
+            <div class="schedule-summary-item">
+                <span>날씨</span>
+                <strong>맑음 · 27℃ · 습도 65%</strong>
+            </div>
+        </div>
+
+        <div class="schedule-list">
+            <article class="schedule-item">
+                <span class="schedule-sequence">1</span>
+
+                <div>
+                    <strong class="schedule-time">10:00</strong>
+                    <p class="schedule-spot">힐링 스팟 HS1</p>
+                </div>
+            </article>
+
+            <article class="schedule-item">
+                <span class="schedule-sequence">2</span>
+
+                <div>
+                    <strong class="schedule-time">11:00</strong>
+                    <p class="schedule-spot">힐링 스팟 HS2</p>
+                </div>
+            </article>
+        </div>
+    </section>
+
+</main>
+
+</body>
+</html>

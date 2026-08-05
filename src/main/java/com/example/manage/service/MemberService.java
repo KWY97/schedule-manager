@@ -33,4 +33,19 @@ public class MemberService {
 
         memberRepository.save(member);
     }
+
+    public Member login(String loginId, String rawPassword) {
+
+        Member member = memberRepository.findByLoginId(loginId).orElse(null);
+
+        if (member == null) {
+            return null;
+        }
+
+        if (!passwordEncoder.matches(rawPassword, member.getPassword())) {
+            return null;
+        }
+
+        return member;
+    }
 }

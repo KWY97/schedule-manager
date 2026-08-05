@@ -46,11 +46,12 @@ public class AdminController {
         if (session.getAttribute("loginAdminId") == null) {
             return "redirect:/admin/login";
         }
+
         return "admin/home";
     }
 
     @GetMapping("/admin/logout")
-    public String logout(HttpSession session) {
+    public String adminLogout(HttpSession session) {
 
         session.invalidate();
 

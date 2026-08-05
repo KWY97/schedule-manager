@@ -7,8 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-// final 필드를 매개변수로 받는 생성자를 Lombok이 자동으로 만들어줌
-@RequiredArgsConstructor
+@RequiredArgsConstructor // final 필드를 매개변수로 받는 생성자를 Lombok이 자동으로 만들어줌
 public class AdminService {
 
     private final AdminRepository adminRepository;
