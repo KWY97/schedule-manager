@@ -84,4 +84,14 @@ public class AdminController {
 
         return "admin/member-detail";
     }
+
+    @GetMapping("/admin/schedules/new")
+    public String scheduleForm(Model model) {
+
+        List<Member> members = memberService.findAllMembers();
+
+        model.addAttribute("members", members);
+
+        return "admin/schedule-form";
+    }
 }

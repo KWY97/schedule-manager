@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>일정 등록</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="page-body">
+
+<main class="page-container">
+    <section class="card">
+
+        <div class="card-header">
+            <p class="card-eyebrow">Administrator</p>
+            <h1 class="card-title">일정 등록</h1>
+            <p class="card-description">
+                참가자에게 날짜별 코스와 스팟 일정을 등록합니다.
+            </p>
+        </div>
+
+        <form
+                class="login-form"
+                th:action="@{/admin/schedules/new}"
+                method="post"
+        >
+            <div>
+                <label for="memberId">참가자</label>
+
+                <select
+                        id="memberId"
+                        name="memberId"
+                        required
+                >
+                    <option value="">참가자를 선택해 주세요</option>
+
+                    <option
+                            th:each="member : ${members}"
+                            th:value="${member.memberId}"
+                            th:text="|${member.participantNo}번 · ${member.group}그룹 · ${member.loginId}|">
+                    </option>
+                </select>
+            </div>
+
+            <div>
+                <label for="scheduleDate">일정 날짜</label>
+                <input
+                        type="date"
+                        id="scheduleDate"
+                        name="scheduleDate"
+                        required
+                >
+            </div>
+
+            <div>
+                <label for="course">코스</label>
+                <select
+                        id="course"
+                        name="course"
+                        required
+                >
+                    <option value="">코스를 선택해 주세요</option>
+                    <option value="A">코스 A</option>
+                    <option value="B">코스 B</option>
+                    <option value="C">코스 C</option>
+                </select>
+            </div>
+
+            <fieldset>
+                <legend>첫 번째 스팟</legend>
+
+                <div>
+                    <label for="firstSpotNo">스팟 번호</label>
+                    <select
+                            id="firstSpotNo"
+                            name="firstSpotNo"
+                            required
+                    >
+                        <option value="">스팟을 선택해 주세요</option>
+                        <option value="1">스팟 1</option>
+                        <option value="2">스팟 2</option>
+                        <option value="3">스팟 3</option>
+                        <option value="4">스팟 4</option>
+                        <option value="5">스팟 5</option>
+                        <option value="6">스팟 6</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="firstStartTime">시작 시간</label>
+                    <input
+                            type="time"
+                            id="firstStartTime"
+                            name="firstStartTime"
+                            required
+                    >
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>두 번째 스팟</legend>
+
+                <div>
+                    <label for="secondSpotNo">스팟 번호</label>
+                    <select
+                            id="secondSpotNo"
+                            name="secondSpotNo"
+                            required
+                    >
+                        <option value="">스팟을 선택해 주세요</option>
+                        <option value="1">스팟 1</option>
+                        <option value="2">스팟 2</option>
+                        <option value="3">스팟 3</option>
+                        <option value="4">스팟 4</option>
+                        <option value="5">스팟 5</option>
+                        <option value="6">스팟 6</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="secondStartTime">시작 시간</label>
+                    <input
+                            type="time"
+                            id="secondStartTime"
+                            name="secondStartTime"
+                            required
+                    >
+                </div>
+            </fieldset>
+
+            <button type="submit">일정 등록</button>
+        </form>
+
+        <a class="back-link"
+           th:href="@{/admin}">
+           관리자 메인으로
+        </a>
+
+    </section>
+</main>
+
+</body>
+</html>

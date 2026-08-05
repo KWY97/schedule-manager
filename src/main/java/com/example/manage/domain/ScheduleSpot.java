@@ -27,4 +27,16 @@ public class ScheduleSpot {
 
     @Column(nullable = false)
     private Integer sequence;
+
+    public ScheduleSpot(
+            Schedule schedule,
+            Integer spotNo,
+            LocalTime startTime,
+            Integer sequence)
+    {
+        this.schedule = schedule;
+        this.spotNo = spotNo;
+        this.startTime = startTime;
+        this.sequence = sequence;
+    }
 }

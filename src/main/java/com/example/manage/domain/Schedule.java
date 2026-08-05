@@ -28,4 +28,14 @@ public class Schedule {
     private String weather;
     private Double temperature;
     private Double humidity;
+
+    public Schedule(
+            Member member,
+            LocalDate scheduleDate,
+            String course)
+    {
+        this.member = member;
+        this.scheduleDate = scheduleDate;
+        this.course = course;
+    }
 }
