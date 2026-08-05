@@ -68,4 +68,15 @@ public class ScheduleService {
     public List<Schedule> findAllSchedules() {
         return scheduleRepository.findAll();
     }
+
+    @Transactional(readOnly = true)
+    public Schedule findSchedule(Long scheduleId) {
+        return scheduleRepository.findById(scheduleId).orElse(null);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ScheduleSpot> findScheduleSpots(Long scheduleId) {
+        return scheduleSpotRepository.findByScheduleScheduleIdOrderBySequenceAsc(scheduleId);
+    }
+
 }

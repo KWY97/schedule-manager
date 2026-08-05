@@ -796,6 +796,27 @@ input[type="time"].form-input {
     }
 }
 
+/* 일정 상세 페이지 */
+.schedule-spot-section {
+    margin-top: 28px;
+}
+
+.schedule-spot-header {
+    margin-bottom: 16px;
+}
+
+.schedule-spot-header h2 {
+    margin: 0;
+    color: #111827;
+    font-size: 18px;
+}
+
+.schedule-spot-header p {
+    margin: 6px 0 0;
+    color: #6b7280;
+    font-size: 13px;
+}
+
 /* 모바일 대응 */
 @media (max-width: 520px) {
     .page-container {

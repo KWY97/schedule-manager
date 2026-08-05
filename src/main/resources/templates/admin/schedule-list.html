@@ -42,7 +42,12 @@
 
                 <tbody>
                 <tr th:each="schedule : ${schedules}">
-                    <td th:text="${schedule.scheduleDate}"></td>
+                    <td>
+                        <a class="member-detail-link"
+                           th:href="@{/admin/schedules/{scheduleId}(scheduleId=${schedule.scheduleId})}"
+                           th:text="${schedule.scheduleDate}">
+                        </a>
+                    </td>
                     <td th:text="${schedule.member.participantNo}"></td>
                     <td th:text="${schedule.member.group}"></td>
                     <td th:text="${schedule.member.loginId}"></td>

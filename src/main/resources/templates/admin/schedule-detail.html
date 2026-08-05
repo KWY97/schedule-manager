@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>일정 상세 정보</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="page-body">
+
+<main class="page-container">
+    <section class="card member-detail-card">
+
+        <div class="card-header">
+            <p class="card-eyebrow">Administrator</p>
+            <h1 class="card-title">일정 상세 정보</h1>
+            <p class="card-description">
+                선택한 참가자의 일정과 스팟 순서를 확인합니다.
+            </p>
+        </div>
+
+        <dl class="member-detail-list">
+            <div class="member-detail-item">
+                <dt>일정 날짜</dt>
+                <dd th:text="${schedule.scheduleDate}"></dd>
+            </div>
+
+            <div class="member-detail-item">
+                <dt>참가자 번호</dt>
+                <dd th:text="${schedule.member.participantNo}"></dd>
+            </div>
+
+            <div class="member-detail-item">
+                <dt>그룹</dt>
+                <dd th:text="|${schedule.member.group}그룹|"></dd>
+            </div>
+
+            <div class="member-detail-item">
+                <dt>로그인 아이디</dt>
+                <dd th:text="${schedule.member.loginId}"></dd>
+            </div>
+
+            <div class="member-detail-item">
+                <dt>코스</dt>
+                <dd th:text="|코스 ${schedule.course}|"></dd>
+            </div>
+
+            <div class="member-detail-item">
+                <dt>날씨</dt>
+                <dd th:text="${schedule.weather != null ? schedule.weather : '-'}"></dd>
+            </div>
+
+            <div class="member-detail-item">
+                <dt>기온</dt>
+                <dd th:text="${schedule.temperature != null ? schedule.temperature + '℃' : '-'}"></dd>
+            </div>
+
+            <div class="member-detail-item">
+                <dt>습도</dt>
+                <dd th:text="${schedule.humidity != null ? schedule.humidity + '%' : '-'}"></dd>
+            </div>
+        </dl>
+
+        <section class="schedule-spot-section">
+            <div class="schedule-spot-header">
+                <h2>스팟 일정</h2>
+                <p>방문 순서에 따라 표시됩니다.</p>
+            </div>
+
+            <div class="schedule-list">
+                <article
+                        class="schedule-item"
+                        th:each="spot : ${scheduleSpots}">
+
+                    <span
+                            class="schedule-sequence"
+                            th:text="${spot.sequence}">
+                    </span>
+
+                    <div>
+                        <strong
+                                class="schedule-time"
+                                th:text="${spot.startTime}">
+                        </strong>
+
+                        <p
+                                class="schedule-spot"
+                                th:text="|스팟 ${spot.spotNo}|">
+                        </p>
+                    </div>
+                </article>
+            </div>
+
+            <p
+                    class="empty-message"
+                    th:if="${#lists.isEmpty(scheduleSpots)}">
+                등록된 스팟 일정이 없습니다.
+            </p>
+        </section>
+
+        <div class="detail-action-list">
+            <a
+                    class="secondary-link-button"
+                    th:href="@{/admin/schedules}">
+                일정 목록으로
+            </a>
+        </div>
+
+    </section>
+</main>
+
+</body>
+</html>

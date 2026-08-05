@@ -3,6 +3,7 @@ package com.example.manage.controller;
 import com.example.manage.domain.Admin;
 import com.example.manage.domain.Member;
 import com.example.manage.domain.Schedule;
+import com.example.manage.domain.ScheduleSpot;
 import com.example.manage.dto.ScheduleForm;
 import com.example.manage.service.AdminService;
 import com.example.manage.service.MemberService;
@@ -125,5 +126,24 @@ public class AdminController {
         model.addAttribute("schedules", schedules);
 
         return "admin/schedule-list";
+    }
+
+    @GetMapping("/admin/schedules/{scheduleId}")
+    public String scheduleDetail(
+            @PathVariable Long scheduleId,
+            Model model
+    ) {
+        Schedule schedule = scheduleService.findSchedule(scheduleId);
+
+        if (schedule == null) {
+            return "redirect:/admin/schedules";
+        }
+
+        List<ScheduleSpot> scheduleSpots = scheduleService.findScheduleSpots(scheduleId);
+
+        model.addAttribute("schedule", schedule);
+        model.addAttribute("scheduleSpots", scheduleSpots);
+
+        return "admin/schedule-detail";
     }
 }
