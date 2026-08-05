@@ -16,7 +16,7 @@ public class Member {
     @Column(nullable = false, unique = true)
     private Integer participantNo;
 
-    @Column(nullable = false)
+    @Column(name = "group_code", nullable = false)
     private String group;
 
     @Column(nullable = false, unique = true)

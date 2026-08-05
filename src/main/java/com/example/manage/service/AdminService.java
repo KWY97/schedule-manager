@@ -1,5 +1,6 @@
 package com.example.manage.service;
 
+import com.example.manage.domain.Admin;
 import com.example.manage.repository.AdminRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,4 +13,16 @@ public class AdminService {
 
     private final AdminRepository adminRepository;
     private final PasswordEncoder passwordEncoder;
+
+    public void createAdmin(String loginId, String rawPassword) {
+
+        if (adminRepository.findByLoginId(loginId).isPresent()) {
+            return;
+        }
+
+        String encodedPassword = passwordEncoder.encode(rawPassword);
+        Admin admin = new Admin(loginId, encodedPassword);
+
+        adminRepository.save(admin);
+    }
 }
