@@ -836,6 +836,69 @@ input[type="time"].form-input {
     font-size: 14px;
 }
 
+/* ================================
+   FullCalendar
+================================ */
+
+.full-calendar-card {
+    padding: 24px;
+}
+
+#calendar {
+    width: 100%;
+}
+
+.fc .fc-toolbar-title {
+    color: #111827;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.fc .fc-button {
+    border: 0;
+    border-radius: 8px;
+    background-color: #2563eb;
+    box-shadow: none;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.fc .fc-button:hover {
+    background-color: #1d4ed8;
+}
+
+.fc .fc-button:disabled {
+    background-color: #93c5fd;
+}
+
+.fc .fc-col-header-cell-cushion {
+    padding: 12px 4px;
+    color: #374151;
+    text-decoration: none;
+}
+
+.fc .fc-daygrid-day-number {
+    padding: 8px;
+    color: #374151;
+    text-decoration: none;
+}
+
+.fc .fc-event {
+    border: 0;
+    border-radius: 6px;
+    background-color: #2563eb;
+    cursor: pointer;
+}
+
+.fc .fc-event-title {
+    padding: 2px 4px;
+    font-weight: 600;
+}
+
+.fc .fc-day-today {
+    background-color: #eff6ff !important;
+}
+
 
 /* ================================
    태블릿 및 작은 화면 대응
@@ -1003,5 +1066,28 @@ input[type="time"].form-input {
 
     .member-schedule-information {
         grid-template-columns: 1fr;
+    }
+
+    .full-calendar-card {
+        padding: 12px;
+    }
+
+    .fc .fc-toolbar {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .fc .fc-toolbar-title {
+        font-size: 18px;
+    }
+
+    .fc .fc-daygrid-day-number {
+        padding: 5px;
+        font-size: 12px;
+    }
+
+    .fc .fc-event-title {
+        font-size: 10px;
     }
 }
