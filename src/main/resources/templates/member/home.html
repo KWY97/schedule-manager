@@ -99,79 +99,81 @@
              th:attr="
                 data-id=${schedule.scheduleId},
                 data-date=${schedule.scheduleDate},
-                data-course=${schedule.course}">
+                data-course=${schedule.course},
+                data-group=${schedule.member.group},
+                data-weather=${schedule.weather}">
         </div>
 
     </div>
 
 
     <!-- ================================
-         실제 DB에서 조회한 참가자 본인 일정 목록
-    ================================= -->
-    <section class="member-schedule-section">
+     선택한 일정 상세
+================================= -->
+    <section class="schedule-detail-card">
 
-        <div class="section-heading">
+        <div class="schedule-detail-header">
+
             <div>
+
                 <p class="section-label">
-                    MY SCHEDULE
+                    SELECTED SCHEDULE
                 </p>
 
-                <h2 class="section-title">
-                    내 일정 목록
+                <h2
+                        id="selected-date-title"
+                        class="schedule-detail-title">
+
+                    날짜를 선택해 주세요.
+
                 </h2>
+
             </div>
-        </div>
 
+            <span
+                    id="selected-course"
+                    class="course-badge">
 
-        <!-- 일정이 있을 때 -->
-        <div class="member-schedule-list"
-             th:if="${!#lists.isEmpty(schedules)}">
+            -
 
-            <article class="member-schedule-card"
-                     th:each="schedule : ${schedules}">
-
-                <div class="member-schedule-header">
-
-                    <strong class="member-schedule-date"
-                            th:text="${schedule.scheduleDate}">
-                    </strong>
-
-                    <span class="course-badge"
-                          th:text="|코스 ${schedule.course}|">
-                    </span>
-
-                </div>
-
-                <div class="member-schedule-information">
-
-                    <div>
-                        <span>그룹</span>
-
-                        <strong th:text="|${schedule.member.group}그룹|">
-                        </strong>
-                    </div>
-
-                    <div>
-                        <span>날씨</span>
-
-                        <strong th:text="${schedule.weather != null
-                            ? schedule.weather
-                            : '-'}">
-                        </strong>
-                    </div>
-
-                </div>
-
-            </article>
+        </span>
 
         </div>
 
+        <div class="schedule-summary">
 
-        <!-- 일정이 없을 때 -->
-        <p class="empty-message"
-           th:if="${#lists.isEmpty(schedules)}">
-            등록된 일정이 없습니다.
-        </p>
+            <div class="schedule-summary-item">
+
+                <span>그룹</span>
+
+                <strong id="selected-group">
+                    -
+                </strong>
+
+            </div>
+
+            <div class="schedule-summary-item">
+
+                <span>날씨</span>
+
+                <strong id="selected-weather">
+                    -
+                </strong>
+
+            </div>
+
+        </div>
+
+        <div
+                id="selected-spots"
+                class="schedule-list">
+
+            <!--
+                여기에 스팟 목록이
+                JavaScript로 들어갈 예정
+            -->
+
+        </div>
 
     </section>
 
@@ -189,6 +191,29 @@
          */
         const calendarElement =
             document.getElementById("calendar");
+
+
+        /*
+         * 선택한 일정을 화면에 표시할 HTML 요소
+         */
+        const selectedDateTitle =
+            document.getElementById("selected-date-title");
+
+
+        const selectedCourse =
+            document.getElementById("selected-course");
+
+
+        const selectedGroup =
+            document.getElementById("selected-group");
+
+
+        const selectedWeather =
+            document.getElementById("selected-weather");
+
+
+        const selectedSpots =
+            document.getElementById("selected-spots");
 
 
         /*
@@ -222,6 +247,24 @@
                     title: `코스 ${scheduleItem.dataset.course}`,
                     start: scheduleItem.dataset.date,
                     allDay: true
+                };
+
+            });
+
+
+        /*
+         * 날짜 클릭 시 사용할
+         * Schedule 목록
+         */
+        const schedules =
+            Array.from(scheduleItems).map(function (scheduleItem) {
+
+                return {
+                    id: scheduleItem.dataset.id,
+                    date: scheduleItem.dataset.date,
+                    course: scheduleItem.dataset.course,
+                    group: scheduleItem.dataset.group,
+                    weather: scheduleItem.dataset.weather
                 };
 
             });
@@ -293,15 +336,55 @@
                 /*
                  * 내용에 맞게 달력 높이 자동 조절
                  */
-                height: "auto"
-            });
+                height: "auto",
 
+                /*
+                 * 달력 날짜를 클릭했을 때 실행
+                 * info.dateStr에는
+                 * "2026-08-14" 형태의 날짜 문자열이 들어온다.
+                 */
+                dateClick: function (info) {
+
+                    const selectedSchedule =
+                        schedules.find(function (schedule) {
+
+                            return schedule.date === info.dateStr;
+
+                        });
+
+                    if (selectedSchedule === undefined) {
+
+                        selectedDateTitle.textContent =
+                            "해당 날짜에는 일정이 없습니다.";
+
+                        selectedCourse.textContent = "-";
+                        selectedGroup.textContent = "-";
+                        selectedWeather.textContent = "-";
+                        selectedSpots.innerHTML = "";
+
+                        return;
+                    }
+
+                    selectedDateTitle.textContent =
+                        selectedSchedule.date;
+
+                    selectedCourse.textContent =
+                        "코스 " + selectedSchedule.course;
+
+                    selectedGroup.textContent =
+                        selectedSchedule.group + "그룹";
+
+                    selectedWeather.textContent =
+                        selectedSchedule.weather
+                            ? selectedSchedule.weather
+                            : "-";
+                }
+            });
 
         /*
          * 화면에 달력 출력
          */
         calendar.render();
-
     });
 </script>
 
