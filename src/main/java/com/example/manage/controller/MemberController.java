@@ -2,31 +2,32 @@ package com.example.manage.controller;
 
 import com.example.manage.domain.Member;
 import com.example.manage.domain.Schedule;
+import com.example.manage.dto.MemberScheduleDetailResponse;
 import com.example.manage.service.MemberService;
 import com.example.manage.service.ScheduleService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/member")
 public class MemberController {
 
     private final MemberService memberService;
     private final ScheduleService scheduleService;
 
-    @GetMapping("/member/login")
+    @GetMapping("/login")
     public String memberLogin() {
         return "member/login";
     }
 
-    @PostMapping("/member/login")
+    @PostMapping("/login")
     public String memberLogin(
             @RequestParam String loginId,
             @RequestParam String password,
@@ -45,7 +46,7 @@ public class MemberController {
         return "redirect:/member";
     }
 
-    @GetMapping("/member")
+    @GetMapping
     public String memberHome(
             HttpSession session,
             Model model
@@ -58,7 +59,7 @@ public class MemberController {
         return "member/home";
     }
 
-    @GetMapping("/member/logout")
+    @GetMapping("/logout")
     public String memberLogout(HttpSession session) {
 
         session.invalidate();
@@ -66,5 +67,20 @@ public class MemberController {
         return "redirect:/";
     }
 
+    @GetMapping("/api/schedules/{scheduleId}")
+    @ResponseBody
+    public ResponseEntity<MemberScheduleDetailResponse> getScheduleDetail(
+            @PathVariable Long scheduleId,
+            HttpSession session) {
 
+        Long memberId = (Long) session.getAttribute("loginMemberId");
+
+        MemberScheduleDetailResponse response = scheduleService.findMemberScheduleDetail(scheduleId, memberId);
+
+        if (response == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(response);
+    }
 }

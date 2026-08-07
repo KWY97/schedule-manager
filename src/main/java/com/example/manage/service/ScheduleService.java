@@ -3,6 +3,7 @@ package com.example.manage.service;
 import com.example.manage.domain.Member;
 import com.example.manage.domain.Schedule;
 import com.example.manage.domain.ScheduleSpot;
+import com.example.manage.dto.MemberScheduleDetailResponse;
 import com.example.manage.repository.MemberRepository;
 import com.example.manage.repository.ScheduleRepository;
 import com.example.manage.repository.ScheduleSpotRepository;
@@ -82,5 +83,43 @@ public class ScheduleService {
     @Transactional(readOnly = true)
     public List<ScheduleSpot> findScheduleSpots(Long scheduleId) {
         return scheduleSpotRepository.findByScheduleScheduleIdOrderBySequenceAsc(scheduleId);
+    }
+
+    @Transactional(readOnly = true)
+    public MemberScheduleDetailResponse findMemberScheduleDetail(Long scheduleId, Long memberId) {
+
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElse(null);
+
+        if (schedule == null) {
+            return null;
+        }
+
+        if (!schedule.getMember().getMemberId().equals(memberId)) {
+            return null;
+        }
+
+        List<ScheduleSpot> scheduleSpots =
+                scheduleSpotRepository
+                        .findByScheduleScheduleIdOrderBySequenceAsc(scheduleId);
+
+        List<MemberScheduleDetailResponse.SpotResponse> spots =
+                scheduleSpots.stream()
+                        .map(scheduleSpot ->
+                                new MemberScheduleDetailResponse.SpotResponse(
+                                        scheduleSpot.getSpotNo(),
+                                        scheduleSpot.getStartTime(),
+                                        scheduleSpot.getSequence()
+                                )
+                        )
+                        .toList();
+
+        return new MemberScheduleDetailResponse(
+                schedule.getScheduleId(),
+                schedule.getScheduleDate(),
+                schedule.getCourse(),
+                schedule.getMember().getGroupNo(),
+                schedule.getWeather(),
+                spots
+        );
     }
 }

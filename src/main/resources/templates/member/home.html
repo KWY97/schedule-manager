@@ -100,7 +100,7 @@
                 data-id=${schedule.scheduleId},
                 data-date=${schedule.scheduleDate},
                 data-course=${schedule.course},
-                data-group=${schedule.member.group},
+                data-group-no=${schedule.member.groupNo},
                 data-weather=${schedule.weather}">
         </div>
 
@@ -263,7 +263,7 @@
                     id: scheduleItem.dataset.id,
                     date: scheduleItem.dataset.date,
                     course: scheduleItem.dataset.course,
-                    group: scheduleItem.dataset.group,
+                    groupNo: scheduleItem.dataset.groupNo,
                     weather: scheduleItem.dataset.weather
                 };
 
@@ -338,20 +338,24 @@
                  */
                 height: "auto",
 
-                /*
-                 * 달력 날짜를 클릭했을 때 실행
-                 * info.dateStr에는
-                 * "2026-08-14" 형태의 날짜 문자열이 들어온다.
-                 */
+
                 dateClick: function (info) {
 
+                    /*
+                     * 클릭한 날짜에 해당하는 일정 찾기
+                     *
+                     * 여기서는 상세정보를 사용하려는 게 아니라
+                     * 백엔드에 요청할 scheduleId를 알아내기 위해 찾는다.
+                     */
                     const selectedSchedule =
                         schedules.find(function (schedule) {
-
                             return schedule.date === info.dateStr;
-
                         });
 
+
+                    /*
+                     * 해당 날짜에 일정이 없는 경우
+                     */
                     if (selectedSchedule === undefined) {
 
                         selectedDateTitle.textContent =
@@ -365,19 +369,150 @@
                         return;
                     }
 
-                    selectedDateTitle.textContent =
-                        selectedSchedule.date;
 
-                    selectedCourse.textContent =
-                        "코스 " + selectedSchedule.course;
+                    /*
+                     * 일정이 있다면 scheduleId를 이용해
+                     * 백엔드 API에 상세정보를 요청한다.
+                     */
+                    fetch(`/member/api/schedules/${selectedSchedule.id}`)
 
-                    selectedGroup.textContent =
-                        selectedSchedule.group + "그룹";
+                        /*
+                         * 서버의 응답을 확인한다.
+                         */
+                        .then(function (response) {
 
-                    selectedWeather.textContent =
-                        selectedSchedule.weather
-                            ? selectedSchedule.weather
-                            : "-";
+                            if (!response.ok) {
+                                throw new Error(
+                                    "일정 상세정보를 불러올 수 없습니다."
+                                );
+                            }
+
+                            /*
+                             * JSON 응답을 JavaScript 객체로 변환
+                             */
+                            return response.json();
+                        })
+
+
+                        /*
+                         * 백엔드에서 받은 일정 상세정보
+                         */
+                        .then(function (scheduleDetail) {
+
+                            console.log(scheduleDetail);
+
+
+                            /*
+                             * 일정 기본정보 출력
+                             */
+                            selectedDateTitle.textContent =
+                                scheduleDetail.scheduleDate;
+
+                            selectedCourse.textContent =
+                                "코스 " + scheduleDetail.course;
+
+                            selectedGroup.textContent =
+                                scheduleDetail.groupNo + "그룹";
+
+                            selectedWeather.textContent =
+                                scheduleDetail.weather
+                                    ? scheduleDetail.weather
+                                    : "-";
+
+
+                            /*
+                             * 기존에 표시된 스팟 목록을 비운다.
+                             */
+                            selectedSpots.innerHTML = "";
+
+
+                            /*
+                             * 백엔드에서 받은 스팟 목록을
+                             * 하나씩 화면에 출력한다.
+                             */
+                            scheduleDetail.spots.forEach(function (spot) {
+
+                                const spotItem =
+                                    document.createElement("article");
+
+                                spotItem.classList.add("schedule-item");
+
+
+                                const sequenceElement =
+                                    document.createElement("span");
+
+                                sequenceElement.classList.add(
+                                    "schedule-sequence"
+                                );
+
+                                sequenceElement.textContent =
+                                    spot.sequence;
+
+
+                                const spotInformation =
+                                    document.createElement("div");
+
+
+                                const timeElement =
+                                    document.createElement("strong");
+
+                                timeElement.classList.add(
+                                    "schedule-time"
+                                );
+
+                                timeElement.textContent =
+                                    spot.startTime;
+
+
+                                const spotElement =
+                                    document.createElement("p");
+
+                                spotElement.classList.add(
+                                    "schedule-spot"
+                                );
+
+                                spotElement.textContent =
+                                    "HS" + spot.spotNo;
+
+
+                                spotInformation.appendChild(
+                                    timeElement
+                                );
+
+                                spotInformation.appendChild(
+                                    spotElement
+                                );
+
+                                spotItem.appendChild(
+                                    sequenceElement
+                                );
+
+                                spotItem.appendChild(
+                                    spotInformation
+                                );
+
+                                selectedSpots.appendChild(
+                                    spotItem
+                                );
+                            });
+                        })
+
+
+                        /*
+                         * API 호출 실패 시
+                         */
+                        .catch(function (error) {
+
+                            console.error(error);
+
+                            selectedDateTitle.textContent =
+                                "일정 정보를 불러오지 못했습니다.";
+
+                            selectedCourse.textContent = "-";
+                            selectedGroup.textContent = "-";
+                            selectedWeather.textContent = "-";
+                            selectedSpots.innerHTML = "";
+                        });
                 }
             });
 
