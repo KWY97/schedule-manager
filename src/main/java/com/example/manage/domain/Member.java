@@ -16,8 +16,8 @@ public class Member {
     @Column(nullable = false, unique = true)
     private Integer participantNo;
 
-    @Column(name = "group_code", nullable = false)
-    private String group;
+    @Column(nullable = false)
+    private Integer groupNo;
 
     @Column(nullable = false, unique = true)
     private String loginId;
@@ -28,9 +28,9 @@ public class Member {
     private String name;
     private String phone;
 
-    public Member(Integer participantNo, String group, String loginId, String password) {
+    public Member(Integer participantNo, Integer groupNo, String loginId, String password) {
         this.participantNo = participantNo;
-        this.group = group;
+        this.groupNo = groupNo;
         this.loginId = loginId;
         this.password = password;
     }

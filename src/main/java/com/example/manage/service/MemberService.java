@@ -17,7 +17,7 @@ public class MemberService {
 
     public void createMember(
             Integer participantNo,
-            String group,
+            Integer groupNo,
             String loginId,
             String rawPassword
     ) {
@@ -31,7 +31,7 @@ public class MemberService {
         }
 
         String encodedPassword = passwordEncoder.encode(rawPassword);
-        Member member = new Member(participantNo, group, loginId, encodedPassword);
+        Member member = new Member(participantNo, groupNo, loginId, encodedPassword);
 
         memberRepository.save(member);
     }
