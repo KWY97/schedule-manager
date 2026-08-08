@@ -12,27 +12,25 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/admin")
 public class AdminController {
 
     private final AdminService adminService;
     private final MemberService memberService;
     private final ScheduleService scheduleService;
 
-    @GetMapping("/admin/login")
+    @GetMapping("/login")
     public String adminLogin() {
         return "admin/login";
     }
 
-    @PostMapping("/admin/login")
+    @PostMapping("/login")
     public String adminLogin(
             @RequestParam String loginId,
             @RequestParam String password,
@@ -51,12 +49,12 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @GetMapping("/admin")
+    @GetMapping
     public String adminHome(HttpSession session) {
         return "admin/home";
     }
 
-    @GetMapping("/admin/logout")
+    @GetMapping("/logout")
     public String adminLogout(HttpSession session) {
 
         session.invalidate();
@@ -64,7 +62,7 @@ public class AdminController {
         return "redirect:/";
     }
 
-    @GetMapping("admin/members")
+    @GetMapping("/members")
     public String memberList(Model model) {
 
         List<Member> members = memberService.findAllMembers();
@@ -74,7 +72,7 @@ public class AdminController {
         return "admin/member-list";
     }
 
-    @GetMapping("/admin/members/{memberId}")
+    @GetMapping("/members/{memberId}")
     public String memberDetail(
             @PathVariable Long memberId,
             Model model
@@ -90,7 +88,7 @@ public class AdminController {
         return "admin/member-detail";
     }
 
-    @GetMapping("/admin/schedules/new")
+    @GetMapping("/schedules/new")
     public String scheduleForm(Model model) {
 
         List<Member> members = memberService.findAllMembers();
@@ -100,7 +98,7 @@ public class AdminController {
         return "admin/schedule-form";
     }
 
-    @PostMapping("/admin/schedules/new")
+    @PostMapping("/schedules/new")
     public String createSchedule(
             ScheduleForm form
     ) {
@@ -118,7 +116,7 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @GetMapping("/admin/schedules")
+    @GetMapping("/schedules")
     public String scheduleList(Model model) {
 
         List<Schedule> schedules = scheduleService.findAllSchedules();
@@ -128,7 +126,7 @@ public class AdminController {
         return "admin/schedule-list";
     }
 
-    @GetMapping("/admin/schedules/{scheduleId}")
+    @GetMapping("/schedules/{scheduleId}")
     public String scheduleDetail(
             @PathVariable Long scheduleId,
             Model model
@@ -145,5 +143,69 @@ public class AdminController {
         model.addAttribute("scheduleSpots", scheduleSpots);
 
         return "admin/schedule-detail";
+    }
+
+    @GetMapping("/schedules/{scheduleId}/edit")
+    public String editScheduleForm(
+            @PathVariable Long scheduleId,
+            Model model
+    ) {
+
+        Schedule schedule =
+                scheduleService.findSchedule(scheduleId);
+
+        if (schedule == null) {
+            return "redirect:/admin/schedules";
+        }
+
+        List<ScheduleSpot> scheduleSpots =
+                scheduleService.findScheduleSpots(scheduleId);
+
+        ScheduleForm form = new ScheduleForm();
+
+        form.setMemberId(schedule.getMember().getMemberId());
+        form.setScheduleDate(schedule.getScheduleDate());
+        form.setCourse(schedule.getCourse());
+
+        if (scheduleSpots.size() >= 1) {
+            ScheduleSpot firstSpot = scheduleSpots.get(0);
+
+            form.setFirstSpotNo(firstSpot.getSpotNo());
+            form.setFirstStartTime(firstSpot.getStartTime());
+        }
+
+        if (scheduleSpots.size() >= 2) {
+            ScheduleSpot secondSpot = scheduleSpots.get(1);
+
+            form.setSecondSpotNo(secondSpot.getSpotNo());
+            form.setSecondStartTime(secondSpot.getStartTime());
+        }
+
+        List<Member> members = memberService.findAllMembers();
+
+        model.addAttribute("scheduleId", scheduleId);
+        model.addAttribute("scheduleForm", form);
+        model.addAttribute("members", members);
+
+        return "admin/schedule-edit";
+    }
+
+    @PostMapping("/schedules/{scheduleId}/edit")
+    public String updateSchedule(
+            @PathVariable Long scheduleId,
+            ScheduleForm form
+    ) {
+        scheduleService.updateSchedule(
+                scheduleId,
+                form.getMemberId(),
+                form.getScheduleDate(),
+                form.getCourse(),
+                form.getFirstSpotNo(),
+                form.getFirstStartTime(),
+                form.getSecondSpotNo(),
+                form.getSecondStartTime()
+        );
+
+        return "redirect:/admin/schedules/" + scheduleId;
     }
 }

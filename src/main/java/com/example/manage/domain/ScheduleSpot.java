@@ -39,4 +39,9 @@ public class ScheduleSpot {
         this.startTime = startTime;
         this.sequence = sequence;
     }
+
+    public void update(Integer spotNo, LocalTime startTime) {
+        this.spotNo = spotNo;
+        this.startTime = startTime;
+    }
 }

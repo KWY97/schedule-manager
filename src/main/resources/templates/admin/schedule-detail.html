@@ -99,9 +99,14 @@
         </section>
 
         <div class="detail-action-list">
-            <a
-                    class="secondary-link-button"
-                    th:href="@{/admin/schedules}">
+
+            <a class="primary-button"
+               th:href="@{/admin/schedules/{scheduleId}/edit(scheduleId=${schedule.scheduleId})}">
+                일정 수정
+            </a>
+
+            <a class="secondary-link-button"
+               th:href="@{/admin/schedules}">
                 일정 목록으로
             </a>
         </div>

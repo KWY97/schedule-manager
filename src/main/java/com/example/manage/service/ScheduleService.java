@@ -122,4 +122,90 @@ public class ScheduleService {
                 spots
         );
     }
+
+    @Transactional
+    public void updateSchedule(
+            Long scheduleId,
+            Long memberId,
+            LocalDate scheduleDate,
+            String course,
+            Integer firstSpotNo,
+            LocalTime firstStartTime,
+            Integer secondSpotNo,
+            LocalTime secondStartTime
+    ) {
+        /*
+         * 수정할 일정 조회
+         */
+        Schedule schedule =
+                scheduleRepository.findById(scheduleId)
+                        .orElse(null);
+
+        if (schedule == null) {
+            return;
+        }
+
+
+        /*
+         * 수정 화면에서 선택한 참가자 조회
+         */
+        Member member =
+                memberRepository.findById(memberId)
+                        .orElse(null);
+
+        if (member == null) {
+            return;
+        }
+
+        /*
+         * 기존 ScheduleSpot 조회
+         *
+         * sequence 오름차순이므로
+         * 0번 = 첫 번째 스팟
+         * 1번 = 두 번째 스팟
+         */
+        List<ScheduleSpot> scheduleSpots =
+                scheduleSpotRepository
+                        .findByScheduleScheduleIdOrderBySequenceAsc(
+                                scheduleId
+                        );
+
+
+        /*
+         * 일정 기본 정보 수정
+         */
+        schedule.update(
+                member,
+                scheduleDate,
+                course
+        );
+
+        /*
+         * 첫 번째 스팟 수정
+         */
+        if (scheduleSpots.size() >= 1) {
+
+            ScheduleSpot firstSpot =
+                    scheduleSpots.get(0);
+
+            firstSpot.update(
+                    firstSpotNo,
+                    firstStartTime
+            );
+        }
+
+        /*
+         * 두 번째 스팟 수정
+         */
+        if (scheduleSpots.size() >= 2) {
+
+            ScheduleSpot secondSpot =
+                    scheduleSpots.get(1);
+
+            secondSpot.update(
+                    secondSpotNo,
+                    secondStartTime
+            );
+        }
+    }
 }

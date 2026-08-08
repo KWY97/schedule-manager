@@ -38,4 +38,14 @@ public class Schedule {
         this.scheduleDate = scheduleDate;
         this.course = course;
     }
+
+    public void update(
+            Member member,
+            LocalDate scheduleDate,
+            String course
+    ) {
+        this.member = member;
+        this.scheduleDate = scheduleDate;
+        this.course = course;
+    }
 }
