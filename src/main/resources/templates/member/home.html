@@ -110,7 +110,9 @@
     <!-- ================================
      선택한 일정 상세
 ================================= -->
-    <section class="schedule-detail-card">
+    <section
+            id="schedule-detail"
+            class="schedule-detail-card">
 
         <div class="schedule-detail-header">
 
@@ -216,6 +218,10 @@
             document.getElementById("selected-spots");
 
 
+        const scheduleDetailSection =
+            document.getElementById("schedule-detail");
+
+
         /*
          * Thymeleaf가 DB 일정마다 생성한
          * 숨겨진 HTML 요소들을 모두 가져온다.
@@ -305,13 +311,6 @@
                 },
 
                 /*
-                 * 오늘 버튼 한글 표시
-                 */
-                buttonText: {
-                    today: "오늘"
-                },
-
-                /*
                  * 일요일부터 시작
                  */
                 firstDay: 0,
@@ -338,6 +337,19 @@
                  */
                 height: "auto",
 
+                /*
+                 * 날짜 칸이 만들어질 때
+                 * 날짜 숫자 부분에만 클릭 커서를 표시한다.
+                 */
+                dayCellDidMount: function (info) {
+
+                    const dayNumber =
+                        info.el.querySelector('[aria-hidden="true"]');
+
+                    if (dayNumber !== null) {
+                        dayNumber.style.cursor = "pointer";
+                    }
+                },
 
                 dateClick: function (info) {
 
@@ -365,6 +377,15 @@
                         selectedGroup.textContent = "-";
                         selectedWeather.textContent = "-";
                         selectedSpots.innerHTML = "";
+
+                        /*
+                         * 선택한 일정 상세 카드 위치로
+                         * 부드럽게 화면 이동
+                         */
+                        scheduleDetailSection.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start"
+                        });
 
                         return;
                     }
@@ -461,7 +482,7 @@
                                 );
 
                                 timeElement.textContent =
-                                    spot.startTime;
+                                    spot.startTime.substring(0, 5);
 
 
                                 const spotElement =
@@ -494,6 +515,14 @@
                                 selectedSpots.appendChild(
                                     spotItem
                                 );
+                            });
+                            /*
+                             * 선택한 일정 상세 카드 위치로
+                             * 부드럽게 화면 이동
+                             */
+                            scheduleDetailSection.scrollIntoView({
+                                behavior: "smooth",
+                                block: "start"
                             });
                         })
 
