@@ -105,12 +105,25 @@
                 일정 수정
             </a>
 
+            <form
+                    class="delete-form"
+                    th:action="@{/admin/schedules/{scheduleId}/delete(scheduleId=${schedule.scheduleId})}"
+                    method="post"
+                    onsubmit="return confirm('정말 이 일정을 삭제하시겠습니까?');"
+            >
+                <button
+                        class="delete-button"
+                        type="submit">
+                    일정 삭제
+                </button>
+            </form>
+
             <a class="secondary-link-button"
                th:href="@{/admin/schedules}">
                 일정 목록으로
             </a>
-        </div>
 
+        </div>
     </section>
 </main>
 

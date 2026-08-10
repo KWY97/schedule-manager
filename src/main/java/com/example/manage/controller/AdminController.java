@@ -208,4 +208,11 @@ public class AdminController {
 
         return "redirect:/admin/schedules/" + scheduleId;
     }
+
+    @PostMapping("/schedules/{scheduleId}/delete")
+    public String deleteSchedule(@PathVariable Long scheduleId) {
+        scheduleService.deleteSchedule(scheduleId);
+
+        return "redirect:/admin/schedules";
+    }
 }

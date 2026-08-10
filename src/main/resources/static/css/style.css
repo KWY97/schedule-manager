@@ -836,6 +836,54 @@ input[type="time"].form-input {
     font-size: 14px;
 }
 
+.detail-action-list {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+/* 수정 링크 / 삭제 form / 목록 링크를 모두 동일한 비율로 */
+.detail-action-list > a,
+.detail-action-list > form {
+    flex: 1 1 0;
+    width: 0;
+}
+
+/* form 자체 여백 제거 */
+.detail-action-list > form {
+    margin: 0;
+}
+
+/* 삭제 버튼 */
+.delete-button {
+    width: 100%;
+    min-height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 0;
+    border-radius: 10px;
+
+    background-color: #dc2626;
+    color: #ffffff;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.delete-button:hover {
+    background-color: #b91c1c;
+}
+
+/* 일정 삭제 버튼 hover */
+.detail-action-list .delete-button:hover {
+    background-color: #b91c1c;
+}
+
 /* ================================
    FullCalendar
 ================================ */

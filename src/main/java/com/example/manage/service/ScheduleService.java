@@ -123,7 +123,7 @@ public class ScheduleService {
         );
     }
 
-    @Transactional
+
     public void updateSchedule(
             Long scheduleId,
             Long memberId,
@@ -207,5 +207,16 @@ public class ScheduleService {
                     secondStartTime
             );
         }
+    }
+
+    public void deleteSchedule(Long scheduleId) {
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElse(null);
+
+        if (schedule == null) {
+            return;
+        }
+
+        scheduleSpotRepository.deleteByScheduleScheduleId(scheduleId);
+        scheduleRepository.delete(schedule);
     }
 }

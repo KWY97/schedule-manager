@@ -9,4 +9,6 @@ public interface ScheduleSpotRepository extends JpaRepository<ScheduleSpot, Long
 
     // 해당 scheduleId에 속한 스팟을 sequence가 작은 순서대로 조회한다.
     List<ScheduleSpot> findByScheduleScheduleIdOrderBySequenceAsc(Long scheduleId);
+
+    void deleteByScheduleScheduleId(Long scheduleId);
 }
