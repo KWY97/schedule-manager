@@ -28,14 +28,10 @@ import java.time.LocalTime;
 public class ScheduleForm {
 
     private Long memberId;
-
     private LocalDate scheduleDate;
-
     private String course;
-
     private Integer firstSpotNo;
     private LocalTime firstStartTime;
-
     private Integer secondSpotNo;
     private LocalTime secondStartTime;
 }

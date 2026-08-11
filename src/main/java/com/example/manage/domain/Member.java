@@ -34,4 +34,18 @@ public class Member {
         this.loginId = loginId;
         this.password = password;
     }
+
+    public void update(
+            Integer participantNo,
+            Integer groupNo,
+            String loginId,
+            String name,
+            String phone
+    ) {
+        this.participantNo = participantNo;
+        this.groupNo = groupNo;
+        this.loginId = loginId;
+        this.name = name;
+        this.phone = phone;
+    }
 }

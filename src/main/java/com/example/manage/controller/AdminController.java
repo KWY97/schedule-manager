@@ -4,6 +4,7 @@ import com.example.manage.domain.Admin;
 import com.example.manage.domain.Member;
 import com.example.manage.domain.Schedule;
 import com.example.manage.domain.ScheduleSpot;
+import com.example.manage.dto.MemberEditForm;
 import com.example.manage.dto.ScheduleForm;
 import com.example.manage.service.AdminService;
 import com.example.manage.service.MemberService;
@@ -195,6 +196,7 @@ public class AdminController {
             @PathVariable Long scheduleId,
             ScheduleForm form
     ) {
+
         scheduleService.updateSchedule(
                 scheduleId,
                 form.getMemberId(),
@@ -214,5 +216,80 @@ public class AdminController {
         scheduleService.deleteSchedule(scheduleId);
 
         return "redirect:/admin/schedules";
+    }
+
+    @GetMapping("/members/{memberId}/edit")
+    public String editMemberForm(
+            @PathVariable Long memberId,
+            Model model
+    ) {
+
+        Member member = memberService.findMember(memberId);
+
+        if (member == null) {
+            return "redirect:/admin/members";
+        }
+
+        MemberEditForm form = new MemberEditForm();
+
+        form.setParticipantNo(member.getParticipantNo());
+        form.setGroupNo(member.getGroupNo());
+        form.setLoginId(member.getLoginId());
+        form.setName(member.getName());
+        form.setPhone(member.getPhone());
+
+        model.addAttribute("memberId", memberId);
+        model.addAttribute("memberEditForm", form);
+
+        return "admin/member-edit";
+    }
+
+    @PostMapping("/members/{memberId}/edit")
+    public String updateMember(
+            @PathVariable Long memberId,
+            MemberEditForm form,
+            Model model
+    ) {
+
+        String result = memberService.updateMember(
+                memberId,
+                form.getParticipantNo(),
+                form.getGroupNo(),
+                form.getLoginId(),
+                form.getName(),
+                form.getPhone()
+        );
+
+        /*
+         * 참가자 번호가 중복된 경우
+         */
+        if (result.equals("PARTICIPANT_NO_DUPLICATE")) {
+            model.addAttribute("errorMessage", "이미 사용 중인 참가자 번호입니다.");
+            model.addAttribute("memberId", memberId);
+            model.addAttribute("memberEditForm", form);
+            return "admin/member-edit";
+        }
+
+        /*
+         * 로그인 아이디가 중복된 경우
+         */
+        if (result.equals("LOGIN_ID_DUPLICATE")) {
+            model.addAttribute("errorMessage", "이미 사용 중인 로그인 아이디입니다.");
+            model.addAttribute("memberId", memberId);
+            model.addAttribute("memberEditForm", form);
+            return "admin/member-edit";
+        }
+
+        /*
+         * 참가자를 찾을 수 없는 경우
+         */
+        if (result.equals("MEMBER_NOT_FOUND")) {
+            return "redirect:/admin/members";
+        }
+
+        /*
+         * 정상적으로 수정된 경우 ("SUCCESS")
+         */
+        return "redirect:/admin/members/" + memberId;
     }
 }
