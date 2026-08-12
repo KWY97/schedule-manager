@@ -52,6 +52,21 @@
                 참가자 정보 수정
             </a>
 
+            <form
+                class="delete-form"
+                th:action="@{/admin/members/{memberId}/delete(memberId=${member.memberId})}"
+                method="post"
+                onsubmit="return confirm('참가자를 삭제하면 해당 참가자의 모든 일정도 함께 삭제됩니다. 정말 삭제하시겠습니까?')"
+            >
+                <button
+                    class="delete-button"
+                    type="submit"
+                >
+                    참가자 삭제
+                </button>
+
+            </form>
+
             <a class="secondary-link-button"
                th:href="@{/admin/members}">
                 참가자 목록으로

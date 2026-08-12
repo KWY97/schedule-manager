@@ -292,4 +292,11 @@ public class AdminController {
          */
         return "redirect:/admin/members/" + memberId;
     }
+
+    @PostMapping("/members/{memberId}/delete")
+    public String deleteMember(@PathVariable Long memberId) {
+        memberService.deleteMember(memberId);
+
+        return "redirect:/admin/members";
+    }
 }

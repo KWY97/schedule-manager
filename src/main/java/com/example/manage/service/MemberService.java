@@ -1,7 +1,10 @@
 package com.example.manage.service;
 
 import com.example.manage.domain.Member;
+import com.example.manage.domain.Schedule;
 import com.example.manage.repository.MemberRepository;
+import com.example.manage.repository.ScheduleRepository;
+import com.example.manage.repository.ScheduleSpotRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,6 +19,8 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ScheduleRepository scheduleRepository;
+    private final ScheduleSpotRepository scheduleSpotRepository;
 
     public void createMember(
             Integer participantNo,
@@ -126,5 +131,25 @@ public class MemberService {
         );
 
         return "SUCCESS";
+    }
+
+    public void deleteMember(Long memberId) {
+
+        Member member = memberRepository.findById(memberId).orElse(null);
+
+        if (member == null) {
+            return;
+        }
+
+        List<Schedule> schedules = scheduleRepository.findByMemberMemberIdOrderByScheduleDateAsc(memberId);
+
+        for (Schedule schedule : schedules) {
+
+            scheduleSpotRepository.deleteByScheduleScheduleId(schedule.getScheduleId());
+        }
+
+        scheduleRepository.deleteAll(schedules);
+
+        memberRepository.delete(member);
     }
 }
