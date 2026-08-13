@@ -22,59 +22,119 @@
         <form
                 class="login-form"
                 th:action="@{/admin/schedules/new}"
+                th:object="${scheduleForm}"
                 method="post"
         >
+
+            <!-- 참가자 -->
             <div class="form-group">
-                <label class="form-label" for="memberId">참가자</label>
+                <label class="form-label" for="memberId">
+                    참가자
+                </label>
 
-                <select class="form-input"
+                <select
+                        class="form-input"
                         id="memberId"
-                        name="memberId"
-                        required>
-                    <option value="">참가자를 선택해 주세요</option>
+                        th:field="*{memberId}"
+                        required
+                >
+                    <option value="">
+                        참가자를 선택해 주세요
+                    </option>
 
-                    <option th:each="member : ${members}"
+                    <option
+                            th:each="member : ${members}"
                             th:value="${member.memberId}"
                             th:text="|${member.participantNo}번 · ${member.groupNo}그룹 · ${member.loginId}|">
                     </option>
                 </select>
+
+                <p
+                        class="error-message"
+                        th:if="${#fields.hasErrors('memberId')}"
+                        th:errors="*{memberId}">
+                </p>
             </div>
 
-            <div class="form-group">
-                <label class="form-label" for="scheduleDate">일정 날짜</label>
 
-                <input class="form-input"
-                       type="date"
-                       id="scheduleDate"
-                       name="scheduleDate"
-                       required>
+            <!-- 일정 날짜 -->
+            <div class="form-group">
+                <label class="form-label" for="scheduleDate">
+                    일정 날짜
+                </label>
+
+                <input
+                        class="form-input"
+                        type="date"
+                        id="scheduleDate"
+                        th:field="*{scheduleDate}"
+                        required
+                >
+
+                <p
+                        class="error-message"
+                        th:if="${#fields.hasErrors('scheduleDate')}"
+                        th:errors="*{scheduleDate}">
+                </p>
             </div>
 
-            <div class="form-group">
-                <label class="form-label" for="course">코스</label>
 
-                <select class="form-input"
+            <!-- 코스 -->
+            <div class="form-group">
+                <label class="form-label" for="course">
+                    코스
+                </label>
+
+                <select
+                        class="form-input"
                         id="course"
-                        name="course"
-                        required>
-                    <option value="">코스를 선택해 주세요</option>
-                    <option value="A">HC-A 서측 회복 코스</option>
-                    <option value="B">HC-B 동측 감각 코스</option>
-                    <option value="C">HC-C 남측 힐링 코스</option>
+                        th:field="*{course}"
+                        required
+                >
+                    <option value="">
+                        코스를 선택해 주세요
+                    </option>
+
+                    <option value="A">
+                        HC-A 서측 회복 코스
+                    </option>
+
+                    <option value="B">
+                        HC-B 동측 감각 코스
+                    </option>
+
+                    <option value="C">
+                        HC-C 남측 힐링 코스
+                    </option>
                 </select>
+
+                <p
+                        class="error-message"
+                        th:if="${#fields.hasErrors('course')}"
+                        th:errors="*{course}">
+                </p>
             </div>
 
+
+            <!-- 첫 번째 스팟 -->
             <fieldset>
                 <legend>첫 번째 스팟</legend>
 
                 <div class="form-group">
-                    <label class="form-label" for="firstSpotNo">스팟 번호</label>
-                    <select class="form-input"
+                    <label class="form-label" for="firstSpotNo">
+                        스팟 번호
+                    </label>
+
+                    <select
+                            class="form-input"
                             id="firstSpotNo"
-                            name="firstSpotNo"
+                            th:field="*{firstSpotNo}"
                             required
                     >
-                        <option value="">스팟을 선택해 주세요</option>
+                        <option value="">
+                            스팟을 선택해 주세요
+                        </option>
+
                         <option value="1">HS1 호스타 정원</option>
                         <option value="2">HS2 곶자왈원</option>
                         <option value="3">HS3 가든 위스퍼스</option>
@@ -82,30 +142,56 @@
                         <option value="5">HS5 블로썸 가든</option>
                         <option value="6">HS6 극림원</option>
                     </select>
+
+                    <p
+                            class="error-message"
+                            th:if="${#fields.hasErrors('firstSpotNo')}"
+                            th:errors="*{firstSpotNo}">
+                    </p>
                 </div>
 
+
                 <div class="form-group">
-                    <label class="form-label" for="firstStartTime">시작 시간</label>
-                    <input  class="form-input"
+                    <label class="form-label" for="firstStartTime">
+                        시작 시간
+                    </label>
+
+                    <input
+                            class="form-input"
                             type="time"
                             id="firstStartTime"
-                            name="firstStartTime"
+                            th:field="*{firstStartTime}"
                             required
                     >
+
+                    <p
+                            class="error-message"
+                            th:if="${#fields.hasErrors('firstStartTime')}"
+                            th:errors="*{firstStartTime}">
+                    </p>
                 </div>
             </fieldset>
 
+
+            <!-- 두 번째 스팟 -->
             <fieldset>
                 <legend>두 번째 스팟</legend>
 
                 <div class="form-group">
-                    <label class="form-label" for="secondSpotNo">스팟 번호</label>
-                    <select class="form-input"
+                    <label class="form-label" for="secondSpotNo">
+                        스팟 번호
+                    </label>
+
+                    <select
+                            class="form-input"
                             id="secondSpotNo"
-                            name="secondSpotNo"
+                            th:field="*{secondSpotNo}"
                             required
                     >
-                        <option value="">스팟을 선택해 주세요</option>
+                        <option value="">
+                            스팟을 선택해 주세요
+                        </option>
+
                         <option value="1">HS1 호스타 정원</option>
                         <option value="2">HS2 곶자왈원</option>
                         <option value="3">HS3 가든 위스퍼스</option>
@@ -113,25 +199,49 @@
                         <option value="5">HS5 블로썸 가든</option>
                         <option value="6">HS6 극림원</option>
                     </select>
+
+                    <p
+                            class="error-message"
+                            th:if="${#fields.hasErrors('secondSpotNo')}"
+                            th:errors="*{secondSpotNo}">
+                    </p>
                 </div>
 
+
                 <div class="form-group">
-                    <label class="form-label" for="secondStartTime">시작 시간</label>
-                    <input class="form-input"
+                    <label class="form-label" for="secondStartTime">
+                        시작 시간
+                    </label>
+
+                    <input
+                            class="form-input"
                             type="time"
                             id="secondStartTime"
-                            name="secondStartTime"
+                            th:field="*{secondStartTime}"
                             required
                     >
+
+                    <p
+                            class="error-message"
+                            th:if="${#fields.hasErrors('secondStartTime')}"
+                            th:errors="*{secondStartTime}">
+                    </p>
                 </div>
             </fieldset>
 
-            <button class="primary-button" type="submit">일정 등록</button>
+
+            <button
+                    class="primary-button"
+                    type="submit">
+                일정 등록
+            </button>
+
         </form>
 
-        <a class="back-link"
-           th:href="@{/admin}">
-           관리자 메인으로
+        <a
+                class="back-link"
+                th:href="@{/admin}">
+            관리자 메인으로
         </a>
 
     </section>

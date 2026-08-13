@@ -10,9 +10,11 @@ import com.example.manage.service.AdminService;
 import com.example.manage.service.MemberService;
 import com.example.manage.service.ScheduleService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -95,14 +97,24 @@ public class AdminController {
         List<Member> members = memberService.findAllMembers();
 
         model.addAttribute("members", members);
+        model.addAttribute("scheduleForm", new ScheduleForm());
 
         return "admin/schedule-form";
     }
 
     @PostMapping("/schedules/new")
     public String createSchedule(
-            ScheduleForm form
+            @Valid ScheduleForm form,
+            BindingResult bindingResult,
+            Model model
     ) {
+
+        if (bindingResult.hasErrors()) {
+            List<Member> members = memberService.findAllMembers();
+            model.addAttribute("members", members);
+
+            return "admin/schedule-form";
+        }
 
         scheduleService.createSchedule(
                 form.getMemberId(),
