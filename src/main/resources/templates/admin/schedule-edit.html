@@ -298,5 +298,59 @@
 
 </main>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const firstStartTime =
+                document.getElementById("firstStartTime");
+
+        const secondStartTime =
+                document.getElementById("secondStartTime");
+
+
+        /*
+         * 첫 번째 시작 시간을 변경하면
+         * 두 번째 시작 시간을 10분 뒤로 자동 설정한다.
+         *
+         * 자동 설정된 이후에는
+         * 관리자가 두 번째 시작 시간을 직접 수정할 수 있다.
+         */
+        firstStartTime.addEventListener("change", function () {
+
+            if (!firstStartTime.value) {
+                secondStartTime.value = "";
+                return;
+            }
+
+            const [hour, minute] =
+                    firstStartTime.value
+                            .split(":")
+                            .map(Number);
+
+            const firstTime = new Date();
+
+            firstTime.setHours(hour);
+            firstTime.setMinutes(minute);
+            firstTime.setSeconds(0);
+
+            firstTime.setMinutes(
+                    firstTime.getMinutes() + 10
+            );
+
+            const secondHour =
+                    String(firstTime.getHours())
+                            .padStart(2, "0");
+
+            const secondMinute =
+                    String(firstTime.getMinutes())
+                            .padStart(2, "0");
+
+            secondStartTime.value =
+                    `${secondHour}:${secondMinute}`;
+        });
+
+    });
+</script>
+
 </body>
 </html>
