@@ -27,6 +27,7 @@
             </p>
         </div>
 
+        <!-- 중복 검사 등의 비즈니스 오류 메시지 -->
         <div
                 class="error-message"
                 th:if="${errorMessage}"
@@ -58,6 +59,12 @@
                         required
                 >
 
+                <p
+                        class="error-message"
+                        th:if="${#fields.hasErrors('participantNo')}"
+                        th:errors="*{participantNo}">
+                </p>
+
             </div>
 
 
@@ -81,6 +88,12 @@
                     <option value="3">3그룹</option>
                 </select>
 
+                <p
+                        class="error-message"
+                        th:if="${#fields.hasErrors('groupNo')}"
+                        th:errors="*{groupNo}">
+                </p>
+
             </div>
 
 
@@ -100,6 +113,12 @@
                         th:field="*{loginId}"
                         required
                 >
+
+                <p
+                        class="error-message"
+                        th:if="${#fields.hasErrors('loginId')}"
+                        th:errors="*{loginId}">
+                </p>
 
             </div>
 

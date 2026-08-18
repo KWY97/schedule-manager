@@ -271,9 +271,21 @@ public class AdminController {
     @PostMapping("/members/{memberId}/edit")
     public String updateMember(
             @PathVariable Long memberId,
-            MemberEditForm form,
+            @Valid MemberEditForm form,
+            BindingResult bindingResult,
             Model model
     ) {
+
+        /*
+         * Validation 실패
+         */
+        if (bindingResult.hasErrors()) {
+
+            model.addAttribute("memberId", memberId);
+
+            return "admin/member-edit";
+        }
+
 
         String result = memberService.updateMember(
                 memberId,
@@ -288,9 +300,14 @@ public class AdminController {
          * 참가자 번호가 중복된 경우
          */
         if (result.equals("PARTICIPANT_NO_DUPLICATE")) {
-            model.addAttribute("errorMessage", "이미 사용 중인 참가자 번호입니다.");
+
+            model.addAttribute(
+                    "errorMessage",
+                    "이미 사용 중인 참가자 번호입니다."
+            );
+
             model.addAttribute("memberId", memberId);
-            model.addAttribute("memberEditForm", form);
+
             return "admin/member-edit";
         }
 
@@ -298,9 +315,14 @@ public class AdminController {
          * 로그인 아이디가 중복된 경우
          */
         if (result.equals("LOGIN_ID_DUPLICATE")) {
-            model.addAttribute("errorMessage", "이미 사용 중인 로그인 아이디입니다.");
+
+            model.addAttribute(
+                    "errorMessage",
+                    "이미 사용 중인 로그인 아이디입니다."
+            );
+
             model.addAttribute("memberId", memberId);
-            model.addAttribute("memberEditForm", form);
+
             return "admin/member-edit";
         }
 
@@ -312,7 +334,7 @@ public class AdminController {
         }
 
         /*
-         * 정상적으로 수정된 경우 ("SUCCESS")
+         * 정상적으로 수정된 경우
          */
         return "redirect:/admin/members/" + memberId;
     }
