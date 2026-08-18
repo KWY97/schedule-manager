@@ -6,18 +6,25 @@
     <title>일정 등록</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
+
 <body class="page-body">
 
 <main class="page-container">
+
     <section class="card form-card">
 
         <div class="card-header">
             <p class="card-eyebrow">Administrator</p>
-            <h1 class="card-title">일정 등록</h1>
+
+            <h1 class="card-title">
+                일정 등록
+            </h1>
+
             <p class="card-description">
                 참가자에게 날짜별 코스와 스팟 일정을 등록합니다.
             </p>
         </div>
+
 
         <form
                 class="login-form"
@@ -28,7 +35,10 @@
 
             <!-- 참가자 -->
             <div class="form-group">
-                <label class="form-label" for="memberId">
+
+                <label
+                        class="form-label"
+                        for="memberId">
                     참가자
                 </label>
 
@@ -54,12 +64,16 @@
                         th:if="${#fields.hasErrors('memberId')}"
                         th:errors="*{memberId}">
                 </p>
+
             </div>
 
 
             <!-- 일정 날짜 -->
             <div class="form-group">
-                <label class="form-label" for="scheduleDate">
+
+                <label
+                        class="form-label"
+                        for="scheduleDate">
                     일정 날짜
                 </label>
 
@@ -76,12 +90,16 @@
                         th:if="${#fields.hasErrors('scheduleDate')}"
                         th:errors="*{scheduleDate}">
                 </p>
+
             </div>
 
 
             <!-- 코스 -->
             <div class="form-group">
-                <label class="form-label" for="course">
+
+                <label
+                        class="form-label"
+                        for="course">
                     코스
                 </label>
 
@@ -113,15 +131,22 @@
                         th:if="${#fields.hasErrors('course')}"
                         th:errors="*{course}">
                 </p>
+
             </div>
 
 
             <!-- 첫 번째 스팟 -->
             <fieldset>
-                <legend>첫 번째 스팟</legend>
+
+                <legend>
+                    첫 번째 스팟
+                </legend>
 
                 <div class="form-group">
-                    <label class="form-label" for="firstSpotNo">
+
+                    <label
+                            class="form-label"
+                            for="firstSpotNo">
                         스팟 번호
                     </label>
 
@@ -135,12 +160,29 @@
                             스팟을 선택해 주세요
                         </option>
 
-                        <option value="1">HS1 호스타 정원</option>
-                        <option value="2">HS2 곶자왈원</option>
-                        <option value="3">HS3 가든 위스퍼스</option>
-                        <option value="4">HS4 콜로네이드 가든</option>
-                        <option value="5">HS5 블로썸 가든</option>
-                        <option value="6">HS6 극림원</option>
+                        <option value="1">
+                            HS1 호스타 정원
+                        </option>
+
+                        <option value="2">
+                            HS2 곶자왈원
+                        </option>
+
+                        <option value="3">
+                            HS3 가든 위스퍼스
+                        </option>
+
+                        <option value="4">
+                            HS4 콜로네이드 가든
+                        </option>
+
+                        <option value="5">
+                            HS5 블로썸 가든
+                        </option>
+
+                        <option value="6">
+                            HS6 극림원
+                        </option>
                     </select>
 
                     <p
@@ -148,11 +190,15 @@
                             th:if="${#fields.hasErrors('firstSpotNo')}"
                             th:errors="*{firstSpotNo}">
                     </p>
+
                 </div>
 
 
                 <div class="form-group">
-                    <label class="form-label" for="firstStartTime">
+
+                    <label
+                            class="form-label"
+                            for="firstStartTime">
                         시작 시간
                     </label>
 
@@ -169,16 +215,24 @@
                             th:if="${#fields.hasErrors('firstStartTime')}"
                             th:errors="*{firstStartTime}">
                     </p>
+
                 </div>
+
             </fieldset>
 
 
             <!-- 두 번째 스팟 -->
             <fieldset>
-                <legend>두 번째 스팟</legend>
+
+                <legend>
+                    두 번째 스팟
+                </legend>
 
                 <div class="form-group">
-                    <label class="form-label" for="secondSpotNo">
+
+                    <label
+                            class="form-label"
+                            for="secondSpotNo">
                         스팟 번호
                     </label>
 
@@ -192,12 +246,29 @@
                             스팟을 선택해 주세요
                         </option>
 
-                        <option value="1">HS1 호스타 정원</option>
-                        <option value="2">HS2 곶자왈원</option>
-                        <option value="3">HS3 가든 위스퍼스</option>
-                        <option value="4">HS4 콜로네이드 가든</option>
-                        <option value="5">HS5 블로썸 가든</option>
-                        <option value="6">HS6 극림원</option>
+                        <option value="1">
+                            HS1 호스타 정원
+                        </option>
+
+                        <option value="2">
+                            HS2 곶자왈원
+                        </option>
+
+                        <option value="3">
+                            HS3 가든 위스퍼스
+                        </option>
+
+                        <option value="4">
+                            HS4 콜로네이드 가든
+                        </option>
+
+                        <option value="5">
+                            HS5 블로썸 가든
+                        </option>
+
+                        <option value="6">
+                            HS6 극림원
+                        </option>
                     </select>
 
                     <p
@@ -205,11 +276,15 @@
                             th:if="${#fields.hasErrors('secondSpotNo')}"
                             th:errors="*{secondSpotNo}">
                     </p>
+
                 </div>
 
 
                 <div class="form-group">
-                    <label class="form-label" for="secondStartTime">
+
+                    <label
+                            class="form-label"
+                            for="secondStartTime">
                         시작 시간
                     </label>
 
@@ -226,10 +301,92 @@
                             th:if="${#fields.hasErrors('secondStartTime')}"
                             th:errors="*{secondStartTime}">
                     </p>
+
                 </div>
+
             </fieldset>
 
 
+            <!-- 날씨 정보 -->
+            <fieldset>
+
+                <legend>
+                    날씨 정보
+                </legend>
+
+                <button
+                        class="primary-button"
+                        type="button"
+                        id="weatherButton">
+                    날씨 불러오기
+                </button>
+
+
+                <!-- 날씨 -->
+                <div class="form-group">
+
+                    <label
+                            class="form-label"
+                            for="weather">
+                        날씨
+                    </label>
+
+                    <input
+                            class="form-input"
+                            type="text"
+                            id="weather"
+                            th:field="*{weather}"
+                            readonly
+                    >
+
+                </div>
+
+
+                <!-- 기온 -->
+                <div class="form-group">
+
+                    <label
+                            class="form-label"
+                            for="temperature">
+                        기온(℃)
+                    </label>
+
+                    <input
+                            class="form-input"
+                            type="text"
+                            step="0.1"
+                            id="temperature"
+                            th:field="*{temperature}"
+                            readonly
+                    >
+
+                </div>
+
+
+                <!-- 습도 -->
+                <div class="form-group">
+
+                    <label
+                            class="form-label"
+                            for="humidity">
+                        습도(%)
+                    </label>
+
+                    <input
+                            class="form-input"
+                            type="text"
+                            step="0.1"
+                            id="humidity"
+                            th:field="*{humidity}"
+                            readonly
+                    >
+
+                </div>
+
+            </fieldset>
+
+
+            <!-- 일정 등록 -->
             <button
                     class="primary-button"
                     type="submit">
@@ -238,6 +395,7 @@
 
         </form>
 
+
         <a
                 class="back-link"
                 th:href="@{/admin}">
@@ -245,10 +403,9 @@
         </a>
 
     </section>
+
 </main>
 
-</section>
-</main>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -258,6 +415,9 @@
 
         const secondStartTime =
                 document.getElementById("secondStartTime");
+
+        const weatherButton =
+                document.getElementById("weatherButton");
 
 
         /*
@@ -279,7 +439,8 @@
                             .split(":")
                             .map(Number);
 
-            const firstTime = new Date();
+            const firstTime =
+                    new Date();
 
             firstTime.setHours(hour);
             firstTime.setMinutes(minute);
@@ -301,11 +462,92 @@
                     `${secondHour}:${secondMinute}`;
         });
 
+
+        /*
+         * 날씨 불러오기
+         *
+         * 일정 날짜와 첫 번째 스팟의 시작 시간을 기준으로
+         * 서버의 날씨 조회 API를 호출한다.
+         */
+        weatherButton.addEventListener("click", async function () {
+
+            const date =
+                    document.getElementById("scheduleDate").value;
+
+            const time =
+                    document.getElementById("firstStartTime").value;
+
+
+            /*
+             * 날짜 또는 시간이 입력되지 않은 경우
+             */
+            if (!date || !time) {
+
+                alert(
+                        "일정 날짜와 첫 번째 시작 시간을 먼저 입력해 주세요."
+                );
+
+                return;
+            }
+
+
+            try {
+
+                /*
+                 * 서버의 날씨 조회 API 호출
+                 */
+                const response =
+                        await fetch(
+                                `/admin/weather?date=${date}&time=${time}`
+                        );
+
+
+                /*
+                 * 서버에서 정상 응답이 오지 않은 경우
+                 */
+                if (!response.ok) {
+
+                    alert(
+                            "날씨 정보를 불러오지 못했습니다."
+                    );
+
+                    return;
+                }
+
+
+                /*
+                 * JSON 응답을 JavaScript 객체로 변환
+                 */
+                const data =
+                        await response.json();
+
+
+                /*
+                 * 조회한 날씨를 화면에 표시
+                 */
+                document.getElementById("weather").value =
+                    data.weather;
+
+                document.getElementById("temperature").value =
+                        data.temperature;
+
+                document.getElementById("humidity").value =
+                        data.humidity;
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert(
+                        "날씨 정보를 불러오는 중 오류가 발생했습니다."
+                );
+            }
+
+        });
+
     });
 </script>
-
-</body>
-</html>
 
 </body>
 </html>

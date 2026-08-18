@@ -61,4 +61,11 @@ public class ScheduleForm {
 
     @NotNull(message = "두 번째 시작 시간을 입력해 주세요.")
     private LocalTime secondStartTime;
+
+    // 날씨 정보
+    private String weather;
+
+    private Double temperature;
+
+    private Double humidity;
 }

@@ -949,6 +949,12 @@ input[type="time"].form-input {
 }
 
 
+/* 날씨 불러오기 버튼 */
+#weatherButton {
+    margin-bottom: 20px;
+}
+
+
 /* ================================
    태블릿 및 작은 화면 대응
 ================================ */
@@ -1003,6 +1009,18 @@ input[type="time"].form-input {
     .member-schedule-list {
         grid-template-columns: 1fr;
     }
+
+    /* 일정 상세 버튼을 작은 화면에서 세로 배치 */
+    .detail-action-list {
+        flex-direction: column;
+    }
+
+    /* PC용 width: 0 설정 해제 */
+    .detail-action-list > a,
+    .detail-action-list > form {
+        flex: none;
+        width: 100%;
+    }
 }
 
 
@@ -1042,10 +1060,6 @@ input[type="time"].form-input {
 
     .member-detail-item dd {
         padding-top: 6px;
-    }
-
-    .detail-action-list {
-        flex-direction: column;
     }
 
     .form-card fieldset {

@@ -51,12 +51,12 @@
             </div>
 
             <div class="member-detail-item">
-                <dt>기온</dt>
+                <dt>기온(℃)</dt>
                 <dd th:text="${schedule.temperature != null ? schedule.temperature + '℃' : '-'}"></dd>
             </div>
 
             <div class="member-detail-item">
-                <dt>습도</dt>
+                <dt>습도(%)</dt>
                 <dd th:text="${schedule.humidity != null ? schedule.humidity + '%' : '-'}"></dd>
             </div>
         </dl>

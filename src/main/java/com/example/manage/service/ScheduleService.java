@@ -24,6 +24,7 @@ public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final ScheduleSpotRepository scheduleSpotRepository;
 
+
     public void createSchedule(
             Long memberId,
             LocalDate scheduleDate,
@@ -31,22 +32,47 @@ public class ScheduleService {
             Integer firstSpotNo,
             LocalTime firstStartTime,
             Integer secondSpotNo,
-            LocalTime secondStartTime
+            LocalTime secondStartTime,
+            String weather,
+            Double temperature,
+            Double humidity
     ) {
-        Member member = memberRepository.findById(memberId).orElse(null);
+
+        Member member =
+                memberRepository.findById(memberId)
+                        .orElse(null);
 
         if (member == null) {
             return;
         }
 
+
+        /*
+         * 일정 생성
+         */
         Schedule schedule = new Schedule(
                 member,
                 scheduleDate,
                 course
         );
 
+
+        /*
+         * 날씨 정보 설정
+         */
+        schedule.updateWeather(
+                weather,
+                temperature,
+                humidity
+        );
+
+
         scheduleRepository.save(schedule);
 
+
+        /*
+         * 첫 번째 스팟
+         */
         ScheduleSpot firstSpot = new ScheduleSpot(
                 schedule,
                 firstSpotNo,
@@ -54,6 +80,10 @@ public class ScheduleService {
                 1
         );
 
+
+        /*
+         * 두 번째 스팟
+         */
         ScheduleSpot secondSpot = new ScheduleSpot(
                 schedule,
                 secondSpotNo,
@@ -61,46 +91,73 @@ public class ScheduleService {
                 2
         );
 
+
         scheduleSpotRepository.save(firstSpot);
         scheduleSpotRepository.save(secondSpot);
     }
 
+
     @Transactional(readOnly = true)
     public List<Schedule> findAllSchedules() {
+
         return scheduleRepository.findAll();
     }
 
+
     @Transactional(readOnly = true)
     public List<Schedule> findScheduleByMemberId(Long memberId) {
-        return scheduleRepository.findByMemberMemberIdOrderByScheduleDateAsc(memberId);
+
+        return scheduleRepository
+                .findByMemberMemberIdOrderByScheduleDateAsc(memberId);
     }
+
 
     @Transactional(readOnly = true)
     public Schedule findSchedule(Long scheduleId) {
-        return scheduleRepository.findById(scheduleId).orElse(null);
+
+        return scheduleRepository
+                .findById(scheduleId)
+                .orElse(null);
     }
+
 
     @Transactional(readOnly = true)
     public List<ScheduleSpot> findScheduleSpots(Long scheduleId) {
-        return scheduleSpotRepository.findByScheduleScheduleIdOrderBySequenceAsc(scheduleId);
+
+        return scheduleSpotRepository
+                .findByScheduleScheduleIdOrderBySequenceAsc(scheduleId);
     }
 
-    @Transactional(readOnly = true)
-    public MemberScheduleDetailResponse findMemberScheduleDetail(Long scheduleId, Long memberId) {
 
-        Schedule schedule = scheduleRepository.findById(scheduleId).orElse(null);
+    @Transactional(readOnly = true)
+    public MemberScheduleDetailResponse findMemberScheduleDetail(
+            Long scheduleId,
+            Long memberId
+    ) {
+
+        Schedule schedule =
+                scheduleRepository.findById(scheduleId)
+                        .orElse(null);
 
         if (schedule == null) {
             return null;
         }
 
-        if (!schedule.getMember().getMemberId().equals(memberId)) {
+
+        if (!schedule.getMember()
+                .getMemberId()
+                .equals(memberId)) {
+
             return null;
         }
 
+
         List<ScheduleSpot> scheduleSpots =
                 scheduleSpotRepository
-                        .findByScheduleScheduleIdOrderBySequenceAsc(scheduleId);
+                        .findByScheduleScheduleIdOrderBySequenceAsc(
+                                scheduleId
+                        );
+
 
         List<MemberScheduleDetailResponse.SpotResponse> spots =
                 scheduleSpots.stream()
@@ -112,6 +169,7 @@ public class ScheduleService {
                                 )
                         )
                         .toList();
+
 
         return new MemberScheduleDetailResponse(
                 schedule.getScheduleId(),
@@ -132,8 +190,12 @@ public class ScheduleService {
             Integer firstSpotNo,
             LocalTime firstStartTime,
             Integer secondSpotNo,
-            LocalTime secondStartTime
+            LocalTime secondStartTime,
+            String weather,
+            Double temperature,
+            Double humidity
     ) {
+
         /*
          * 수정할 일정 조회
          */
@@ -156,6 +218,7 @@ public class ScheduleService {
         if (member == null) {
             return;
         }
+
 
         /*
          * 기존 ScheduleSpot 조회
@@ -180,6 +243,17 @@ public class ScheduleService {
                 course
         );
 
+
+        /*
+         * 날씨 정보 수정
+         */
+        schedule.updateWeather(
+                weather,
+                temperature,
+                humidity
+        );
+
+
         /*
          * 첫 번째 스팟 수정
          */
@@ -193,6 +267,7 @@ public class ScheduleService {
                     firstStartTime
             );
         }
+
 
         /*
          * 두 번째 스팟 수정
@@ -209,14 +284,20 @@ public class ScheduleService {
         }
     }
 
+
     public void deleteSchedule(Long scheduleId) {
-        Schedule schedule = scheduleRepository.findById(scheduleId).orElse(null);
+
+        Schedule schedule =
+                scheduleRepository.findById(scheduleId)
+                        .orElse(null);
 
         if (schedule == null) {
             return;
         }
 
-        scheduleSpotRepository.deleteByScheduleScheduleId(scheduleId);
+        scheduleSpotRepository
+                .deleteByScheduleScheduleId(scheduleId);
+
         scheduleRepository.delete(schedule);
     }
 }

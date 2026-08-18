@@ -48,4 +48,14 @@ public class Schedule {
         this.scheduleDate = scheduleDate;
         this.course = course;
     }
+
+    public void updateWeather(
+            String weather,
+            Double temperature,
+            Double humidity
+    ) {
+        this.weather = weather;
+        this.temperature = temperature;
+        this.humidity = humidity;
+    }
 }

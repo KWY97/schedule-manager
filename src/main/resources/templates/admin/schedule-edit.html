@@ -279,6 +279,79 @@
             </fieldset>
 
 
+            <!-- 날씨 정보 -->
+            <fieldset>
+
+                <legend>
+                    날씨 정보
+                </legend>
+
+                <button
+                        class="primary-button"
+                        type="button"
+                        id="weatherButton">
+                    날씨 불러오기
+                </button>
+
+                <div class="form-group">
+
+                    <label
+                            class="form-label"
+                            for="weather">
+                        날씨
+                    </label>
+
+                    <input
+                            class="form-input"
+                            type="text"
+                            id="weather"
+                            th:field="*{weather}"
+                            readonly
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label
+                            class="form-label"
+                            for="temperature">
+                        기온(℃)
+                    </label>
+
+                    <input
+                            class="form-input"
+                            type="number"
+                            step="0.1"
+                            id="temperature"
+                            th:field="*{temperature}"
+                            readonly
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label
+                            class="form-label"
+                            for="humidity">
+                        습도(%)
+                    </label>
+
+                    <input
+                            class="form-input"
+                            type="number"
+                            step="0.1"
+                            id="humidity"
+                            th:field="*{humidity}"
+                            readonly
+                    >
+
+                </div>
+
+            </fieldset>
+
+
             <button
                     class="primary-button"
                     type="submit">
@@ -306,6 +379,9 @@
 
         const secondStartTime =
                 document.getElementById("secondStartTime");
+
+        const weatherButton =
+                document.getElementById("weatherButton");
 
 
         /*
@@ -347,6 +423,72 @@
 
             secondStartTime.value =
                     `${secondHour}:${secondMinute}`;
+        });
+
+
+        /*
+         * 날씨 불러오기
+         */
+        weatherButton.addEventListener("click", async function () {
+
+            const date =
+                    document.getElementById("scheduleDate").value;
+
+            const time =
+                    document.getElementById("firstStartTime").value;
+
+
+            if (!date || !time) {
+
+                alert(
+                        "일정 날짜와 첫 번째 시작 시간을 먼저 입력해 주세요."
+                );
+
+                return;
+            }
+
+
+            try {
+
+                const response =
+                        await fetch(
+                                `/admin/weather?date=${date}&time=${time}`
+                        );
+
+
+                if (!response.ok) {
+
+                    alert(
+                            "날씨 정보를 불러오지 못했습니다."
+                    );
+
+                    return;
+                }
+
+
+                const data =
+                        await response.json();
+
+
+                document.getElementById("weather").value =
+                        data.weather;
+
+                document.getElementById("temperature").value =
+                        data.temperature;
+
+                document.getElementById("humidity").value =
+                        data.humidity;
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert(
+                        "날씨 정보를 불러오는 중 오류가 발생했습니다."
+                );
+            }
+
         });
 
     });

@@ -6,9 +6,11 @@ import com.example.manage.domain.Schedule;
 import com.example.manage.domain.ScheduleSpot;
 import com.example.manage.dto.MemberEditForm;
 import com.example.manage.dto.ScheduleForm;
+import com.example.manage.dto.WeatherResult;
 import com.example.manage.service.AdminService;
 import com.example.manage.service.MemberService;
 import com.example.manage.service.ScheduleService;
+import com.example.manage.service.WeatherService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Controller
@@ -27,6 +31,7 @@ public class AdminController {
     private final AdminService adminService;
     private final MemberService memberService;
     private final ScheduleService scheduleService;
+    private final WeatherService weatherService;
 
     @GetMapping("/login")
     public String adminLogin() {
@@ -123,7 +128,10 @@ public class AdminController {
                 form.getFirstSpotNo(),
                 form.getFirstStartTime(),
                 form.getSecondSpotNo(),
-                form.getSecondStartTime()
+                form.getSecondStartTime(),
+                form.getWeather(),
+                form.getTemperature(),
+                form.getHumidity()
         );
 
         return "redirect:/admin";
@@ -179,6 +187,9 @@ public class AdminController {
         form.setMemberId(schedule.getMember().getMemberId());
         form.setScheduleDate(schedule.getScheduleDate());
         form.setCourse(schedule.getCourse());
+        form.setWeather(schedule.getWeather());
+        form.setTemperature(schedule.getTemperature());
+        form.setHumidity(schedule.getHumidity());
 
         if (scheduleSpots.size() >= 1) {
             ScheduleSpot firstSpot = scheduleSpots.get(0);
@@ -229,7 +240,10 @@ public class AdminController {
                 form.getFirstSpotNo(),
                 form.getFirstStartTime(),
                 form.getSecondSpotNo(),
-                form.getSecondStartTime()
+                form.getSecondStartTime(),
+                form.getWeather(),
+                form.getTemperature(),
+                form.getHumidity()
         );
 
         return "redirect:/admin/schedules/" + scheduleId;
@@ -344,5 +358,18 @@ public class AdminController {
         memberService.deleteMember(memberId);
 
         return "redirect:/admin/members";
+    }
+
+    @GetMapping("/weather")
+    @ResponseBody
+    public WeatherResult getWeather(
+            @RequestParam LocalDate date,
+            @RequestParam LocalTime time
+    ) {
+
+        return weatherService.getWeather(
+                date,
+                time
+        );
     }
 }
