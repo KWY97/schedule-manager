@@ -206,8 +206,20 @@ public class AdminController {
     @PostMapping("/schedules/{scheduleId}/edit")
     public String updateSchedule(
             @PathVariable Long scheduleId,
-            ScheduleForm form
+            @Valid ScheduleForm form,
+            BindingResult bindingResult,
+            Model model
     ) {
+
+        if (bindingResult.hasErrors()) {
+
+            List<Member> members = memberService.findAllMembers();
+
+            model.addAttribute("scheduleId", scheduleId);
+            model.addAttribute("members", members);
+
+            return "admin/schedule-edit";
+        }
 
         scheduleService.updateSchedule(
                 scheduleId,

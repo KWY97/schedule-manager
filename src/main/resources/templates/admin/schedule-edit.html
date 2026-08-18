@@ -62,6 +62,12 @@
 
                 </select>
 
+                <p
+                        class="error-message"
+                        th:if="${#fields.hasErrors('memberId')}"
+                        th:errors="*{memberId}">
+                </p>
+
             </div>
 
 
@@ -82,6 +88,12 @@
                         th:value="${scheduleForm.scheduleDate}"
                         required
                 >
+
+                <p
+                        class="error-message"
+                        th:if="${#fields.hasErrors('scheduleDate')}"
+                        th:errors="*{scheduleDate}">
+                </p>
 
             </div>
 
@@ -117,6 +129,12 @@
                         HC-C 남측 힐링 코스
                     </option>
                 </select>
+
+                <p
+                        class="error-message"
+                        th:if="${#fields.hasErrors('course')}"
+                        th:errors="*{course}">
+                </p>
 
             </div>
 
@@ -154,6 +172,12 @@
                         <option value="6">HS6 극림원</option>
                     </select>
 
+                    <p
+                            class="error-message"
+                            th:if="${#fields.hasErrors('firstSpotNo')}"
+                            th:errors="*{firstSpotNo}">
+                    </p>
+
                 </div>
 
 
@@ -173,6 +197,12 @@
                             th:value="${scheduleForm.firstStartTime}"
                             required
                     >
+
+                    <p
+                            class="error-message"
+                            th:if="${#fields.hasErrors('firstStartTime')}"
+                            th:errors="*{firstStartTime}">
+                    </p>
 
                 </div>
 
@@ -212,6 +242,12 @@
                         <option value="6">HS6 극림원</option>
                     </select>
 
+                    <p
+                            class="error-message"
+                            th:if="${#fields.hasErrors('secondSpotNo')}"
+                            th:errors="*{secondSpotNo}">
+                    </p>
+
                 </div>
 
 
@@ -231,6 +267,12 @@
                             th:value="${scheduleForm.secondStartTime}"
                             required
                     >
+
+                    <p
+                            class="error-message"
+                            th:if="${#fields.hasErrors('secondStartTime')}"
+                            th:errors="*{secondStartTime}">
+                    </p>
 
                 </div>
 
