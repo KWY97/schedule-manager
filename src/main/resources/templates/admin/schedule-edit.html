@@ -30,7 +30,10 @@
 
         <form
                 class="login-form"
-                th:action="@{/admin/schedules/{scheduleId}/edit(scheduleId=${scheduleId})}"
+                th:action="@{/admin/schedules/{scheduleId}/edit(
+                    scheduleId=${scheduleId},
+                    from=${from}
+                )}"
                 th:object="${scheduleForm}"
                 method="post"
         >

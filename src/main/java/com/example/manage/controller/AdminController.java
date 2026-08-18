@@ -150,18 +150,33 @@ public class AdminController {
     @GetMapping("/schedules/{scheduleId}")
     public String scheduleDetail(
             @PathVariable Long scheduleId,
+            @RequestParam(required = false) String from,
             Model model
     ) {
-        Schedule schedule = scheduleService.findSchedule(scheduleId);
+
+        Schedule schedule =
+                scheduleService.findSchedule(scheduleId);
 
         if (schedule == null) {
             return "redirect:/admin/schedules";
         }
 
-        List<ScheduleSpot> scheduleSpots = scheduleService.findScheduleSpots(scheduleId);
+        List<ScheduleSpot> scheduleSpots =
+                scheduleService.findScheduleSpots(scheduleId);
 
         model.addAttribute("schedule", schedule);
         model.addAttribute("scheduleSpots", scheduleSpots);
+
+        /*
+         * 상세 페이지에 어디에서 들어왔는지 전달
+         *
+         * 일정 목록에서 들어온 경우:
+         * from = null
+         *
+         * 달력에서 들어온 경우:
+         * from = "calendar"
+         */
+        model.addAttribute("from", from);
 
         return "admin/schedule-detail";
     }
@@ -169,6 +184,7 @@ public class AdminController {
     @GetMapping("/schedules/{scheduleId}/edit")
     public String editScheduleForm(
             @PathVariable Long scheduleId,
+            @RequestParam(required = false) String from,
             Model model
     ) {
 
@@ -210,6 +226,7 @@ public class AdminController {
         model.addAttribute("scheduleId", scheduleId);
         model.addAttribute("scheduleForm", form);
         model.addAttribute("members", members);
+        model.addAttribute("from", from);
 
         return "admin/schedule-edit";
     }
@@ -217,6 +234,7 @@ public class AdminController {
     @PostMapping("/schedules/{scheduleId}/edit")
     public String updateSchedule(
             @PathVariable Long scheduleId,
+            @RequestParam(required = false) String from,
             @Valid ScheduleForm form,
             BindingResult bindingResult,
             Model model
@@ -245,6 +263,12 @@ public class AdminController {
                 form.getTemperature(),
                 form.getHumidity()
         );
+
+        if ("calendar".equals(from)) {
+            return "redirect:/admin/schedules/"
+                    + scheduleId
+                    + "?from=calendar";
+        }
 
         return "redirect:/admin/schedules/" + scheduleId;
     }
@@ -371,5 +395,16 @@ public class AdminController {
                 date,
                 time
         );
+    }
+
+    @GetMapping("/schedules/calendar")
+    public String scheduleCalendar(Model model) {
+
+        List<Schedule> schedules =
+                scheduleService.findAllSchedules();
+
+        model.addAttribute("schedules", schedules);
+
+        return "admin/schedule-calendar";
     }
 }

@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>관리자 일정 달력</title>
+
+    <!-- FullCalendar 전체 기능 -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@7.0.2/all/global.js"></script>
+
+    <!-- FullCalendar 테마 -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@7.0.2/themes/monarch/global.js"></script>
+
+    <!-- FullCalendar 한국어 -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@7.0.2/locales/ko/global.js"></script>
+
+    <!-- FullCalendar 구조 및 테마 CSS -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/fullcalendar@7.0.2/skeleton.css">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/fullcalendar@7.0.2/themes/monarch/theme.css">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/fullcalendar@7.0.2/themes/monarch/palettes/purple.css">
+
+    <!-- 프로젝트 공통 CSS -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body class="dashboard-body">
+
+
+<!-- ================================
+     관리자 헤더
+================================= -->
+<header class="dashboard-header">
+
+    <div class="dashboard-header-inner">
+
+        <div>
+            <p class="dashboard-eyebrow">
+                Administrator
+            </p>
+
+            <h1 class="dashboard-title">
+                관리자 일정 달력
+            </h1>
+        </div>
+
+
+        <div class="dashboard-user">
+
+            <div class="user-information">
+                <strong>관리자</strong>
+                <span>전체 참가자의 일정을 확인합니다.</span>
+            </div>
+
+            <a
+                    class="logout-link"
+                    th:href="@{/admin}">
+                관리자 메인
+            </a>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- ================================
+     메인
+================================= -->
+<main class="dashboard-container">
+
+
+    <!-- ================================
+         관리자 FullCalendar
+    ================================= -->
+    <section class="calendar-section">
+
+        <div class="section-heading">
+
+
+            <!-- 제목 -->
+            <div>
+
+                <p class="section-label">
+                    ADMIN CALENDAR
+                </p>
+
+                <h2 class="section-title">
+                    전체 일정
+                </h2>
+
+            </div>
+
+
+            <!-- ================================
+                 그룹 색상 범례
+            ================================= -->
+            <div class="calendar-legend">
+
+                <!-- 1그룹 -->
+                <div class="calendar-legend-item">
+
+                    <span
+                            class="calendar-legend-color group-1-color">
+                    </span>
+
+                    <span>
+                        1그룹
+                    </span>
+
+                </div>
+
+
+                <!-- 2그룹 -->
+                <div class="calendar-legend-item">
+
+                    <span
+                            class="calendar-legend-color group-2-color">
+                    </span>
+
+                    <span>
+                        2그룹
+                    </span>
+
+                </div>
+
+
+                <!-- 3그룹 -->
+                <div class="calendar-legend-item">
+
+                    <span
+                            class="calendar-legend-color group-3-color">
+                    </span>
+
+                    <span>
+                        3그룹
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- 달력 -->
+        <div class="calendar-card full-calendar-card">
+
+            <div id="calendar"></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================================
+         FullCalendar에 전달할 일정 데이터
+
+         화면에는 보이지 않는다.
+
+         Thymeleaf가 Schedule 데이터를
+         data-* 속성으로 만들어두고
+         아래 JavaScript에서 읽어서 사용한다.
+    ================================= -->
+    <div
+            id="schedule-data"
+            hidden>
+
+        <div
+                class="schedule-data-item"
+                th:each="schedule : ${schedules}"
+                th:attr="
+                    data-id=${schedule.scheduleId},
+                    data-date=${schedule.scheduleDate},
+                    data-participant-no=${schedule.member.participantNo},
+                    data-group-no=${schedule.member.groupNo}">
+        </div>
+
+    </div>
+
+</main>
+
+
+<!-- ================================
+     FullCalendar 실행
+================================= -->
+<script>
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+
+            /*
+             * FullCalendar가 들어갈 HTML 요소
+             */
+            const calendarElement =
+                document.getElementById(
+                    "calendar"
+                );
+
+
+            /*
+             * Thymeleaf가 만들어 놓은
+             * Schedule 데이터 가져오기
+             */
+            const scheduleItems =
+                document.querySelectorAll(
+                    ".schedule-data-item"
+                );
+
+
+            /*
+             * Schedule 데이터를
+             * FullCalendar event 형식으로 변환
+             */
+            const calendarEvents =
+                Array.from(scheduleItems)
+                    .map(function (scheduleItem) {
+
+
+                        /*
+                         * 참가자 번호
+                         *
+                         * 1  → P001
+                         * 4  → P004
+                         * 12 → P012
+                         */
+                        const participantNo =
+                            String(
+                                scheduleItem.dataset.participantNo
+                            ).padStart(
+                                3,
+                                "0"
+                            );
+
+
+                        /*
+                         * 참가자 그룹
+                         */
+                        const groupNo =
+                            scheduleItem.dataset.groupNo;
+
+
+                        /*
+                         * 그룹별 일정 색상
+                         */
+                        let groupColor;
+
+
+                        /*
+                         * 1그룹 - 보라
+                         */
+                        if (groupNo === "1") {
+
+                            groupColor =
+                                "#7c3aed";
+                        }
+
+
+                        /*
+                         * 2그룹 - 청록
+                         */
+                        else if (groupNo === "2") {
+
+                            groupColor =
+                                "#0d9488";
+                        }
+
+
+                        /*
+                         * 3그룹 - 장미
+                         */
+                        else if (groupNo === "3") {
+
+                            groupColor =
+                                "#e11d48";
+                        }
+
+
+                        /*
+                         * 혹시 그룹 번호가
+                         * 1, 2, 3이 아닌 경우
+                         */
+                        else {
+
+                            groupColor =
+                                "#64748b";
+                        }
+
+
+                        /*
+                         * FullCalendar event 반환
+                         */
+                        return {
+
+                            /*
+                             * Schedule PK
+                             */
+                            id:
+                                scheduleItem.dataset.id,
+
+
+                            /*
+                             * 달력에 표시할 이름
+                             */
+                            title:
+                                `P${participantNo}`,
+
+
+                            /*
+                             * 일정 날짜
+                             */
+                            start:
+                                scheduleItem.dataset.date,
+
+
+                            /*
+                             * 시간 없는 종일 일정
+                             */
+                            allDay:
+                                true,
+
+
+                            /*
+                             * FullCalendar v7
+                             * 일정 색상
+                             */
+                            color:
+                                groupColor,
+
+
+                            /*
+                             * FullCalendar v7
+                             * 일정 글자 색상
+                             */
+                            contrastColor:
+                                "#ffffff"
+                        };
+
+                    });
+
+
+            /*
+             * FullCalendar 생성
+             */
+            const calendar =
+                new FullCalendar.Calendar(
+                    calendarElement,
+                    {
+
+
+                        /*
+                         * 월간 달력
+                         */
+                        initialView:
+                            "dayGridMonth",
+
+
+                        /*
+                         * 현재 날짜가 포함된 달부터 시작
+                         */
+                        initialDate:
+                            new Date(),
+
+
+                        /*
+                         * 한국어
+                         */
+                        locale:
+                            "ko",
+
+
+                        /*
+                         * 상단 버튼
+                         */
+                        headerToolbar: {
+
+                            left:
+                                "prev,next today",
+
+                            center:
+                                "title",
+
+                            right:
+                                ""
+                        },
+
+
+                        /*
+                         * 일요일부터 시작
+                         */
+                        firstDay:
+                            0,
+
+
+                        /*
+                         * DB에서 만든 일정 전달
+                         */
+                        events:
+                            calendarEvents,
+
+
+                        /*
+                         * 종일 일정이므로
+                         * 시간 표시하지 않음
+                         */
+                        displayEventTime:
+                            false,
+
+
+                        /*
+                         * 일정이 여러 개 있어도
+                         * +2개 등으로 접지 않고
+                         * 전부 표시
+                         */
+                        dayMaxEvents:
+                            false,
+
+
+                        /*
+                         * 내용에 맞게
+                         * 달력 높이 자동 조절
+                         */
+                        height:
+                            "auto",
+
+
+                        /*
+                         * PXXX 일정이 화면에 만들어졌을 때
+                         *
+                         * 우리가 사용할 hover용
+                         * CSS 클래스를 직접 추가한다.
+                         */
+                        eventDidMount:
+                            function (info) {
+
+                                info.el.classList.add(
+                                    "admin-calendar-event"
+                                );
+                            },
+
+
+                        /*
+                         * PXXX 일정 클릭
+                         *
+                         * 해당 Schedule의
+                         * 관리자 상세 페이지로 이동한다.
+                         *
+                         * from=calendar를 같이 보내서
+                         * 상세 페이지의 돌아가기 버튼이
+                         * 달력으로 돌아갈 수 있게 한다.
+                         */
+                        eventClick:
+                            function (info) {
+
+                                window.location.href =
+                                    `/admin/schedules/${info.event.id}?from=calendar`;
+                            }
+
+                    }
+                );
+
+
+            /*
+             * 달력 화면 출력
+             */
+            calendar.render();
+
+        }
+    );
+
+</script>
+
+</body>
+</html>

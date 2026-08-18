@@ -100,8 +100,12 @@
 
         <div class="detail-action-list">
 
-            <a class="primary-button"
-               th:href="@{/admin/schedules/{scheduleId}/edit(scheduleId=${schedule.scheduleId})}">
+            <a
+                    class="primary-button"
+                    th:href="@{/admin/schedules/{scheduleId}/edit(
+                        scheduleId=${schedule.scheduleId},
+                        from=${from}
+                    )}">
                 일정 수정
             </a>
 
@@ -118,9 +122,22 @@
                 </button>
             </form>
 
-            <a class="secondary-link-button"
-               th:href="@{/admin/schedules}">
+
+            <!-- 일정 목록에서 상세로 들어온 경우 -->
+            <a
+                    class="secondary-link-button"
+                    th:if="${from != 'calendar'}"
+                    th:href="@{/admin/schedules}">
                 일정 목록으로
+            </a>
+
+
+            <!-- 달력에서 상세로 들어온 경우 -->
+            <a
+                    class="secondary-link-button"
+                    th:if="${from == 'calendar'}"
+                    th:href="@{/admin/schedules/calendar}">
+                달력으로
             </a>
 
         </div>

@@ -25,16 +25,18 @@
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/fullcalendar@7.0.2/themes/monarch/palettes/purple.css">
 
-    <!-- 프로젝트 공통 CSS는 가장 마지막 -->
+    <!-- 프로젝트 공통 CSS -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 
 <body class="dashboard-body">
 
 <header class="dashboard-header">
+
     <div class="dashboard-header-inner">
 
         <div>
+
             <p class="dashboard-eyebrow">
                 Schedule Management
             </p>
@@ -42,25 +44,40 @@
             <h1 class="dashboard-title">
                 일정 관리 시스템
             </h1>
+
         </div>
+
 
         <div class="dashboard-user">
 
             <div class="user-information">
-                <strong>참가자</strong>
-                <span>나의 일정을 확인해 주세요.</span>
+
+                <strong>
+                    참가자
+                </strong>
+
+                <span>
+                    나의 일정을 확인해 주세요.
+                </span>
+
             </div>
 
-            <a class="logout-link"
-               th:href="@{/member/logout}">
+
+            <a
+                    class="logout-link"
+                    th:href="@{/member/logout}">
                 로그아웃
             </a>
 
         </div>
+
     </div>
+
 </header>
 
+
 <main class="dashboard-container">
+
 
     <!-- ================================
          FullCalendar
@@ -68,7 +85,9 @@
     <section class="calendar-section">
 
         <div class="section-heading">
+
             <div>
+
                 <p class="section-label">
                     MY CALENDAR
                 </p>
@@ -76,11 +95,16 @@
                 <h2 class="section-title">
                     나의 달력
                 </h2>
+
             </div>
+
         </div>
 
+
         <div class="calendar-card full-calendar-card">
+
             <div id="calendar"></div>
+
         </div>
 
     </section>
@@ -88,28 +112,28 @@
 
     <!-- ================================
          FullCalendar에 전달할 DB 일정 데이터
-
-         화면에는 보이지 않고,
-         아래 JavaScript에서 읽어서 사용한다.
     ================================= -->
-    <div id="schedule-data" hidden>
+    <div
+            id="schedule-data"
+            hidden>
 
-        <div class="schedule-data-item"
-             th:each="schedule : ${schedules}"
-             th:attr="
-                data-id=${schedule.scheduleId},
-                data-date=${schedule.scheduleDate},
-                data-course=${schedule.course},
-                data-group-no=${schedule.member.groupNo},
-                data-weather=${schedule.weather}">
+        <div
+                class="schedule-data-item"
+                th:each="schedule : ${schedules}"
+                th:attr="
+                    data-id=${schedule.scheduleId},
+                    data-date=${schedule.scheduleDate},
+                    data-course=${schedule.course},
+                    data-group-no=${schedule.member.groupNo},
+                    data-weather=${schedule.weather}">
         </div>
 
     </div>
 
 
     <!-- ================================
-     선택한 일정 상세
-================================= -->
+         선택한 일정 상세
+    ================================= -->
     <section
             id="schedule-detail"
             class="schedule-detail-card">
@@ -126,27 +150,33 @@
                         id="selected-date-title"
                         class="schedule-detail-title">
 
-                    날짜를 선택해 주세요.
+                    일정을 선택해 주세요.
 
                 </h2>
 
             </div>
 
+
             <span
                     id="selected-course"
                     class="course-badge">
 
-            -
+                -
 
-        </span>
+            </span>
 
         </div>
 
+
         <div class="schedule-summary">
 
+
+            <!-- 그룹 -->
             <div class="schedule-summary-item">
 
-                <span>그룹</span>
+                <span>
+                    그룹
+                </span>
 
                 <strong id="selected-group">
                     -
@@ -154,9 +184,13 @@
 
             </div>
 
+
+            <!-- 날씨 -->
             <div class="schedule-summary-item">
 
-                <span>날씨</span>
+                <span>
+                    날씨
+                </span>
 
                 <strong id="selected-weather">
                     -
@@ -166,15 +200,11 @@
 
         </div>
 
+
+        <!-- 스팟 일정 -->
         <div
                 id="selected-spots"
                 class="schedule-list">
-
-            <!--
-                여기에 스팟 목록이
-                JavaScript로 들어갈 예정
-            -->
-
         </div>
 
     </section>
@@ -186,371 +216,526 @@
      FullCalendar 실행
 ================================= -->
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
 
-        /*
-         * FullCalendar가 출력될 HTML 요소
-         */
-        const calendarElement =
-            document.getElementById("calendar");
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
 
 
-        /*
-         * 선택한 일정을 화면에 표시할 HTML 요소
-         */
-        const selectedDateTitle =
-            document.getElementById("selected-date-title");
+            /*
+             * FullCalendar 출력 위치
+             */
+            const calendarElement =
+                document.getElementById(
+                    "calendar"
+                );
 
 
-        const selectedCourse =
-            document.getElementById("selected-course");
+            /*
+             * 상세정보 출력 요소
+             */
+            const selectedDateTitle =
+                document.getElementById(
+                    "selected-date-title"
+                );
 
 
-        const selectedGroup =
-            document.getElementById("selected-group");
+            const selectedCourse =
+                document.getElementById(
+                    "selected-course"
+                );
 
 
-        const selectedWeather =
-            document.getElementById("selected-weather");
+            const selectedGroup =
+                document.getElementById(
+                    "selected-group"
+                );
 
 
-        const selectedSpots =
-            document.getElementById("selected-spots");
+            const selectedWeather =
+                document.getElementById(
+                    "selected-weather"
+                );
 
 
-        const scheduleDetailSection =
-            document.getElementById("schedule-detail");
+            const selectedSpots =
+                document.getElementById(
+                    "selected-spots"
+                );
 
 
-        /*
-         * Thymeleaf가 DB 일정마다 생성한
-         * 숨겨진 HTML 요소들을 모두 가져온다.
-         */
-        const scheduleItems =
-            document.querySelectorAll(".schedule-data-item");
+            const scheduleDetailSection =
+                document.getElementById(
+                    "schedule-detail"
+                );
 
 
-        /*
-         * HTML의 data 속성을
-         * FullCalendar 일정 객체 배열로 변환한다.
-         *
-         * 변환 결과 예시:
-         *
-         * [
-         *     {
-         *         id: "1",
-         *         title: "코스 A",
-         *         start: "2026-08-14",
-         *         allDay: true
-         *     }
-         * ]
-         */
-        const calendarEvents =
-            Array.from(scheduleItems).map(function (scheduleItem) {
-
-                return {
-                    id: scheduleItem.dataset.id,
-                    title: `코스 ${scheduleItem.dataset.course}`,
-                    start: scheduleItem.dataset.date,
-                    allDay: true
-                };
-
-            });
+            /*
+             * Thymeleaf가 만든
+             * 일정 데이터 가져오기
+             */
+            const scheduleItems =
+                document.querySelectorAll(
+                    ".schedule-data-item"
+                );
 
 
-        /*
-         * 날짜 클릭 시 사용할
-         * Schedule 목록
-         */
-        const schedules =
-            Array.from(scheduleItems).map(function (scheduleItem) {
+            /*
+             * FullCalendar event 생성
+             */
+            const calendarEvents =
+                Array.from(scheduleItems)
+                    .map(function (scheduleItem) {
 
-                return {
-                    id: scheduleItem.dataset.id,
-                    date: scheduleItem.dataset.date,
-                    course: scheduleItem.dataset.course,
-                    groupNo: scheduleItem.dataset.groupNo,
-                    weather: scheduleItem.dataset.weather
-                };
-
-            });
-
-
-        /*
-         * FullCalendar 객체 생성
-         */
-        const calendar =
-            new FullCalendar.Calendar(calendarElement, {
-
-                /*
-                 * 월간 달력 화면
-                 */
-                initialView: "dayGridMonth",
-
-                /*
-                 * 현재 날짜가 속한 달부터 시작
-                 */
-                initialDate: new Date(),
-
-                /*
-                 * 한국어 적용
-                 */
-                locale: "ko",
-
-                /*
-                 * 달력 상단 메뉴
-                 *
-                 * 왼쪽: 이전, 다음, 오늘 버튼
-                 * 가운데: 현재 연도와 월
-                 * 오른쪽: 표시하지 않음
-                 */
-                headerToolbar: {
-                    left: "prev,next today",
-                    center: "title",
-                    right: ""
-                },
-
-                /*
-
-                 * 일요일부터 시작
-                 */
-                firstDay: 0,
-
-                /*
-                 * DB에서 조회한 일정 전달
-                 */
-                events: calendarEvents,
-
-                /*
-                 * 일정이 하루에 많으면
-                 * +몇 개 형태로 줄여서 표시
-                 */
-                dayMaxEvents: true,
-
-                /*
-                 * 일정 시간이 없는 종일 일정이므로
-                 * 시간 텍스트는 숨긴다.
-                 */
-                displayEventTime: false,
-
-                /*
-                 * 내용에 맞게 달력 높이 자동 조절
-                 */
-                height: "auto",
-
-                /*
-                 * 날짜 칸이 만들어질 때
-                 * 날짜 숫자 부분에만 클릭 커서를 표시한다.
-                 */
-                dayCellDidMount: function (info) {
-
-                    const dayNumber =
-                        info.el.querySelector('[aria-hidden="true"]');
-
-                    if (dayNumber !== null) {
-                        dayNumber.style.cursor = "pointer";
-                    }
-                },
-
-                dateClick: function (info) {
-
-                    /*
-                     * 클릭한 날짜에 해당하는 일정 찾기
-                     *
-                     * 여기서는 상세정보를 사용하려는 게 아니라
-                     * 백엔드에 요청할 scheduleId를 알아내기 위해 찾는다.
-                     */
-                    const selectedSchedule =
-                        schedules.find(function (schedule) {
-                            return schedule.date === info.dateStr;
-                        });
-
-
-                    /*
-                     * 해당 날짜에 일정이 없는 경우
-                     */
-                    if (selectedSchedule === undefined) {
-
-                        selectedDateTitle.textContent =
-                            "해당 날짜에는 일정이 없습니다.";
-
-                        selectedCourse.textContent = "-";
-                        selectedGroup.textContent = "-";
-                        selectedWeather.textContent = "-";
-                        selectedSpots.innerHTML = "";
 
                         /*
-                         * 선택한 일정 상세 카드 위치로
-                         * 부드럽게 화면 이동
+                         * 코스
                          */
-                        scheduleDetailSection.scrollIntoView({
-                            behavior: "smooth",
-                            block: "start"
-                        });
+                        const course =
+                            scheduleItem.dataset.course;
 
-                        return;
-                    }
-
-
-                    /*
-                     * 일정이 있다면 scheduleId를 이용해
-                     * 백엔드 API에 상세정보를 요청한다.
-                     */
-                    fetch(`/member/api/schedules/${selectedSchedule.id}`)
 
                         /*
-                         * 서버의 응답을 확인한다.
+                         * 코스별 색상
                          */
-                        .then(function (response) {
+                        let courseColor;
 
-                            if (!response.ok) {
-                                throw new Error(
-                                    "일정 상세정보를 불러올 수 없습니다."
+
+                        /*
+                         * A 코스 - 초록
+                         */
+                        if (course === "A") {
+
+                            courseColor =
+                                "#16a34a";
+                        }
+
+
+                        /*
+                         * B 코스 - 파랑
+                         */
+                        else if (course === "B") {
+
+                            courseColor =
+                                "#2563eb";
+                        }
+
+
+                        /*
+                         * C 코스 - 주황
+                         */
+                        else if (course === "C") {
+
+                            courseColor =
+                                "#f97316";
+                        }
+
+
+                        /*
+                         * 혹시 A/B/C가 아닌 경우
+                         */
+                        else {
+
+                            courseColor =
+                                "#64748b";
+                        }
+
+
+                        /*
+                         * FullCalendar event 반환
+                         */
+                        return {
+
+                            /*
+                             * Schedule PK
+                             */
+                            id:
+                                scheduleItem.dataset.id,
+
+
+                            /*
+                             * 달력에 표시되는 제목
+                             */
+                            title:
+                                `코스 ${course}`,
+
+
+                            /*
+                             * 일정 날짜
+                             */
+                            start:
+                                scheduleItem.dataset.date,
+
+
+                            /*
+                             * 종일 일정
+                             */
+                            allDay:
+                                true,
+
+
+                            /*
+                             * FullCalendar v7
+                             * 이벤트 색상
+                             */
+                            color:
+                                courseColor,
+
+
+                            /*
+                             * 글자 색상
+                             */
+                            contrastColor:
+                                "#ffffff"
+                        };
+
+                    });
+
+
+            /*
+             * FullCalendar 생성
+             */
+            const calendar =
+                new FullCalendar.Calendar(
+                    calendarElement,
+                    {
+
+
+                        /*
+                         * 월간 달력
+                         */
+                        initialView:
+                            "dayGridMonth",
+
+
+                        /*
+                         * 현재 달
+                         */
+                        initialDate:
+                            new Date(),
+
+
+                        /*
+                         * 한국어
+                         */
+                        locale:
+                            "ko",
+
+
+                        /*
+                         * 상단 메뉴
+                         */
+                        headerToolbar: {
+
+                            left:
+                                "prev,next today",
+
+                            center:
+                                "title",
+
+                            right:
+                                ""
+                        },
+
+
+                        /*
+                         * 일요일부터 시작
+                         */
+                        firstDay:
+                            0,
+
+
+                        /*
+                         * DB 일정
+                         */
+                        events:
+                            calendarEvents,
+
+
+                        /*
+                         * 종일 일정이므로
+                         * 시간 숨김
+                         */
+                        displayEventTime:
+                            false,
+
+
+                        /*
+                         * 일정이 많아도
+                         * 모두 표시
+                         */
+                        dayMaxEvents:
+                            false,
+
+
+                        /*
+                         * 달력 높이 자동
+                         */
+                        height:
+                            "auto",
+
+
+                        /*
+                         * 코스 일정이 화면에 생성되면
+                         * hover용 클래스 추가
+                         */
+                        eventDidMount:
+                            function (info) {
+
+                                info.el.classList.add(
+                                    "member-calendar-event"
                                 );
+                            },
+
+
+                        /*
+                         * 코스 A/B/C 클릭
+                         */
+                        eventClick:
+                            function (info) {
+
+
+                                /*
+                                 * 클릭한 일정의
+                                 * scheduleId
+                                 */
+                                const scheduleId =
+                                    info.event.id;
+
+
+                                /*
+                                 * 일정 상세 API 호출
+                                 */
+                                fetch(
+                                    `/member/api/schedules/${scheduleId}`
+                                )
+
+
+                                    /*
+                                     * 서버 응답 확인
+                                     */
+                                    .then(function (response) {
+
+                                        if (!response.ok) {
+
+                                            throw new Error(
+                                                "일정 상세정보를 불러올 수 없습니다."
+                                            );
+                                        }
+
+                                        return response.json();
+                                    })
+
+
+                                    /*
+                                     * 상세정보 출력
+                                     */
+                                    .then(function (scheduleDetail) {
+
+
+                                        /*
+                                         * 일정 날짜
+                                         */
+                                        selectedDateTitle.textContent =
+                                            scheduleDetail.scheduleDate;
+
+
+                                        /*
+                                         * 코스
+                                         */
+                                        selectedCourse.textContent =
+                                            "코스 "
+                                            + scheduleDetail.course;
+
+
+                                        /*
+                                         * 그룹
+                                         */
+                                        selectedGroup.textContent =
+                                            scheduleDetail.groupNo
+                                            + "그룹";
+
+
+                                        /*
+                                         * 날씨
+                                         */
+                                        selectedWeather.textContent =
+                                            scheduleDetail.weather
+                                                ? scheduleDetail.weather
+                                                : "-";
+
+
+                                        /*
+                                         * 기존 스팟 목록 제거
+                                         */
+                                        selectedSpots.innerHTML =
+                                            "";
+
+
+                                        /*
+                                         * 스팟 일정 출력
+                                         */
+                                        scheduleDetail.spots
+                                            .forEach(function (spot) {
+
+
+                                                /*
+                                                 * 스팟 전체 요소
+                                                 */
+                                                const spotItem =
+                                                    document.createElement(
+                                                        "article"
+                                                    );
+
+                                                spotItem.classList.add(
+                                                    "schedule-item"
+                                                );
+
+
+                                                /*
+                                                 * 순서
+                                                 */
+                                                const sequenceElement =
+                                                    document.createElement(
+                                                        "span"
+                                                    );
+
+                                                sequenceElement.classList.add(
+                                                    "schedule-sequence"
+                                                );
+
+                                                sequenceElement.textContent =
+                                                    spot.sequence;
+
+
+                                                /*
+                                                 * 시간 / 스팟 정보 영역
+                                                 */
+                                                const spotInformation =
+                                                    document.createElement(
+                                                        "div"
+                                                    );
+
+
+                                                /*
+                                                 * 시간
+                                                 */
+                                                const timeElement =
+                                                    document.createElement(
+                                                        "strong"
+                                                    );
+
+                                                timeElement.classList.add(
+                                                    "schedule-time"
+                                                );
+
+                                                timeElement.textContent =
+                                                    spot.startTime.substring(
+                                                        0,
+                                                        5
+                                                    );
+
+
+                                                /*
+                                                 * 스팟
+                                                 */
+                                                const spotElement =
+                                                    document.createElement(
+                                                        "p"
+                                                    );
+
+                                                spotElement.classList.add(
+                                                    "schedule-spot"
+                                                );
+
+                                                spotElement.textContent =
+                                                    "HS"
+                                                    + spot.spotNo;
+
+
+                                                /*
+                                                 * 조립
+                                                 */
+                                                spotInformation.appendChild(
+                                                    timeElement
+                                                );
+
+                                                spotInformation.appendChild(
+                                                    spotElement
+                                                );
+
+                                                spotItem.appendChild(
+                                                    sequenceElement
+                                                );
+
+                                                spotItem.appendChild(
+                                                    spotInformation
+                                                );
+
+                                                selectedSpots.appendChild(
+                                                    spotItem
+                                                );
+
+                                            });
+
+
+                                        /*
+                                         * 상세 카드로 이동
+                                         */
+                                        scheduleDetailSection
+                                            .scrollIntoView({
+
+                                                behavior:
+                                                    "smooth",
+
+                                                block:
+                                                    "start"
+                                            });
+
+                                    })
+
+
+                                    /*
+                                     * 오류
+                                     */
+                                    .catch(function (error) {
+
+                                        console.error(
+                                            error
+                                        );
+
+
+                                        selectedDateTitle.textContent =
+                                            "일정 정보를 불러오지 못했습니다.";
+
+                                        selectedCourse.textContent =
+                                            "-";
+
+                                        selectedGroup.textContent =
+                                            "-";
+
+                                        selectedWeather.textContent =
+                                            "-";
+
+                                        selectedSpots.innerHTML =
+                                            "";
+
+                                    });
+
                             }
 
-                            /*
-                             * JSON 응답을 JavaScript 객체로 변환
-                             */
-                            return response.json();
-                        })
+                    }
+                );
 
 
-                        /*
-                         * 백엔드에서 받은 일정 상세정보
-                         */
-                        .then(function (scheduleDetail) {
+            /*
+             * 달력 출력
+             */
+            calendar.render();
 
-                            console.log(scheduleDetail);
+        }
+    );
 
-
-                            /*
-                             * 일정 기본정보 출력
-                             */
-                            selectedDateTitle.textContent =
-                                scheduleDetail.scheduleDate;
-
-                            selectedCourse.textContent =
-                                "코스 " + scheduleDetail.course;
-
-                            selectedGroup.textContent =
-                                scheduleDetail.groupNo + "그룹";
-
-                            selectedWeather.textContent =
-                                scheduleDetail.weather
-                                    ? scheduleDetail.weather
-                                    : "-";
-
-
-                            /*
-                             * 기존에 표시된 스팟 목록을 비운다.
-                             */
-                            selectedSpots.innerHTML = "";
-
-
-                            /*
-                             * 백엔드에서 받은 스팟 목록을
-                             * 하나씩 화면에 출력한다.
-                             */
-                            scheduleDetail.spots.forEach(function (spot) {
-
-                                const spotItem =
-                                    document.createElement("article");
-
-                                spotItem.classList.add("schedule-item");
-
-
-                                const sequenceElement =
-                                    document.createElement("span");
-
-                                sequenceElement.classList.add(
-                                    "schedule-sequence"
-                                );
-
-                                sequenceElement.textContent =
-                                    spot.sequence;
-
-
-                                const spotInformation =
-                                    document.createElement("div");
-
-
-                                const timeElement =
-                                    document.createElement("strong");
-
-                                timeElement.classList.add(
-                                    "schedule-time"
-                                );
-
-                                timeElement.textContent =
-                                    spot.startTime.substring(0, 5);
-
-
-                                const spotElement =
-                                    document.createElement("p");
-
-                                spotElement.classList.add(
-                                    "schedule-spot"
-                                );
-
-                                spotElement.textContent =
-                                    "HS" + spot.spotNo;
-
-
-                                spotInformation.appendChild(
-                                    timeElement
-                                );
-
-                                spotInformation.appendChild(
-                                    spotElement
-                                );
-
-                                spotItem.appendChild(
-                                    sequenceElement
-                                );
-
-                                spotItem.appendChild(
-                                    spotInformation
-                                );
-
-                                selectedSpots.appendChild(
-                                    spotItem
-                                );
-                            });
-                            /*
-                             * 선택한 일정 상세 카드 위치로
-                             * 부드럽게 화면 이동
-                             */
-                            scheduleDetailSection.scrollIntoView({
-                                behavior: "smooth",
-                                block: "start"
-                            });
-                        })
-
-
-                        /*
-                         * API 호출 실패 시
-                         */
-                        .catch(function (error) {
-
-                            console.error(error);
-
-                            selectedDateTitle.textContent =
-                                "일정 정보를 불러오지 못했습니다.";
-
-                            selectedCourse.textContent = "-";
-                            selectedGroup.textContent = "-";
-                            selectedWeather.textContent = "-";
-                            selectedSpots.innerHTML = "";
-                        });
-                }
-            });
-
-        /*
-         * 화면에 달력 출력
-         */
-        calendar.render();
-    });
 </script>
 
 </body>
