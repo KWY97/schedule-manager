@@ -138,11 +138,45 @@ public class AdminController {
     }
 
     @GetMapping("/schedules")
-    public String scheduleList(Model model) {
+    public String scheduleList(
+            @RequestParam(
+                    defaultValue = "date"
+            ) String sort,
+            Model model
+    ) {
 
-        List<Schedule> schedules = scheduleService.findAllSchedules();
+        /*
+         * 정렬 기준에 따라
+         * 일정 목록을 조회한다.
+         *
+         * date        = 일정 날짜순
+         * participant = 참가자 번호순
+         * group       = 그룹순
+         */
+        List<Schedule> schedules =
+                scheduleService.findAllSchedules(sort);
 
-        model.addAttribute("schedules", schedules);
+
+        /*
+         * 조회한 일정 목록
+         */
+        model.addAttribute(
+                "schedules",
+                schedules
+        );
+
+
+        /*
+         * 현재 선택된 정렬 기준
+         *
+         * HTML의 select에서
+         * 현재 선택값을 표시하기 위해 사용한다.
+         */
+        model.addAttribute(
+                "sort",
+                sort
+        );
+
 
         return "admin/schedule-list";
     }

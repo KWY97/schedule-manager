@@ -7,6 +7,7 @@ import com.example.manage.dto.MemberScheduleDetailResponse;
 import com.example.manage.repository.MemberRepository;
 import com.example.manage.repository.ScheduleRepository;
 import com.example.manage.repository.ScheduleSpotRepository;
+import org.springframework.data.domain.Sort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -101,6 +102,42 @@ public class ScheduleService {
     public List<Schedule> findAllSchedules() {
 
         return scheduleRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Schedule> findAllSchedules(String sort) {
+
+        Sort scheduleSort;
+
+        if ("participant".equals(sort)) {
+
+            /*
+             * 참가자 번호 오름차순
+             *
+             * 같은 참가자라면
+             * 일정 날짜 오름차순
+             */
+            scheduleSort = Sort.by(
+                    Sort.Order.asc("member.participantNo"),
+                    Sort.Order.asc("scheduleDate")
+            );
+
+        } else {
+            /*
+             * 기본값
+             *
+             * 일정 날짜 오름차순
+             *
+             * 같은 날짜라면
+             * 참가자 번호 오름차순
+             */
+            scheduleSort = Sort.by(
+                    Sort.Order.asc("scheduleDate"),
+                    Sort.Order.asc("member.participantNo")
+            );
+        }
+
+        return scheduleRepository.findAll(scheduleSort);
     }
 
 

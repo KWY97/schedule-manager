@@ -214,6 +214,143 @@ body {
    관리자 목록, 상세, 일정 등록
 ================================ */
 
+/* ================================
+   일정 목록 정렬 영역
+================================ */
+
+/*
+ * 왼쪽: 정렬
+ * 오른쪽: 새 일정 등록
+ */
+.schedule-list-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    margin-bottom: 20px;
+}
+
+
+/*
+ * 정렬 폼
+ */
+.schedule-sort-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    margin: 0;
+}
+
+
+/*
+ * "정렬" 텍스트
+ */
+.schedule-sort-label {
+    color: #374151;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+
+/*
+ * 정렬 선택창
+ */
+.schedule-sort-select {
+    height: 42px;
+    min-width: 150px;
+
+    padding: 0 36px 0 12px;
+
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+
+    background-color: #ffffff;
+
+    color: #374151;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+    outline: none;
+
+    transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease;
+}
+
+
+/*
+ * 선택창 클릭
+ */
+.schedule-sort-select:focus {
+    border-color: #2563eb;
+
+    box-shadow:
+            0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+
+/*
+ * 정렬 버튼
+ */
+.schedule-sort-button {
+    height: 42px;
+
+    padding: 0 16px;
+
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+
+    background-color: #ffffff;
+    color: #374151;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+            background-color 0.2s ease,
+            border-color 0.2s ease,
+            transform 0.1s ease;
+}
+
+
+/*
+ * 정렬 버튼 hover
+ */
+.schedule-sort-button:hover {
+    border-color: #9ca3af;
+    background-color: #f9fafb;
+}
+
+
+/*
+ * 정렬 버튼 클릭
+ */
+.schedule-sort-button:active {
+    transform: translateY(1px);
+}
+
+
+/*
+ * 새 일정 등록 버튼
+ *
+ * 기존 primary-link-button은 width: 100%이므로
+ * 일정 목록에서는 필요한 크기만 사용한다.
+ */
+.schedule-create-button {
+    width: auto;
+    min-height: 42px;
+    padding: 0 18px;
+
+    font-size: 14px;
+}
+
 /* 관리자 목록 페이지용 넓은 카드 */
 .list-card {
     max-width: 1080px;
@@ -1292,4 +1429,31 @@ input[type="time"].form-input {
     .calendar-legend-item {
         font-size: 12px;
     }
+
+        /* ================================
+           일정 목록 정렬 모바일
+        ================================= */
+
+        .schedule-list-toolbar {
+            align-items: stretch;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .schedule-sort-form {
+            width: 100%;
+        }
+
+        .schedule-sort-select {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .schedule-sort-button {
+            flex-shrink: 0;
+        }
+
+        .schedule-create-button {
+            width: 100%;
+        }
 }
